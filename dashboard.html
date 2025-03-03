@@ -35,7 +35,7 @@
 <body>
     <div class="container">
         <h1>Cloud Readiness Dashboard</h1>
-        <p id="responseContent"></p>
+        <pre id="responseContent"></pre>
     </div>
 
     <script>
@@ -45,9 +45,9 @@
 
         // Display the OpenAI response
         if (data) {
-            document.getElementById('responseContent').innerHTML = decodeURIComponent(data);
+            document.getElementById('responseContent').textContent = decodeURIComponent(data);
         } else {
-            document.getElementById('responseContent').innerHTML = 'No data available.';
+            document.getElementById('responseContent').textContent = 'No data available.';
         }
     </script>
 </body>
