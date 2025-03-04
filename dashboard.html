@@ -92,51 +92,21 @@
 
         if (data) {
             try {
-                const decodedData = JSON.parse(decodeURIComponent(data));
-                let formattedData = '';
-                let personalizedRecommendations = '';
+                const decodedData = decodeURIComponent(data); // Decoded data is already in text form
 
-                for (const [key, value] of Object.entries(decodedData)) {
-                    if (key !== 'nlp_requirements' && key !== 'ai_response') {
-                        formattedData += `<strong>${key}:</strong> ${value}<br>`;
-                    }
-                }
+                // Assuming that the data sent to dashboard.html is the OpenAI response in text format
+                const formattedData = `<p>${decodedData}</p>`;
+                
+                // Display the OpenAI response
+                recommendations.innerHTML = formattedData;
 
-                // Set user name
-                if (decodedData.name) {
-                    userNameElement.innerHTML = `<h2>Thank you, ${decodedData.name}!</h2>`;
-                }
-
-                // Display the OpenAI response if available, otherwise use default recommendations
-                if (decodedData.ai_response) {
-                    personalizedRecommendations += `<p>${decodedData.ai_response}</p>`;
-                } else {
-                    personalizedRecommendations += `<p>Based on the provided information, we recommend the following actions:</p>`;
-                    personalizedRecommendations += `<ul>`;
-                    if (decodedData.business_type && decodedData.industry) {
-                        personalizedRecommendations += `<li><strong>Business Type:</strong> For a ${decodedData.business_type} business in the ${decodedData.industry} industry, consider scalable cloud solutions to accommodate future growth.</li>`;
-                    }
-                    if (decodedData.current_infrastructure) {
-                        personalizedRecommendations += `<li><strong>Current Infrastructure:</strong> Since your current infrastructure is ${decodedData.current_infrastructure}, explore cloud services that provide seamless migration and integration with on-premise systems.</li>`;
-                    }
-                    if (decodedData.security_requirements) {
-                        personalizedRecommendations += `<li><strong>Security Requirements:</strong> Ensure your cloud provider offers robust security measures to meet your specific requirements.</li>`;
-                    }
-                    if (decodedData.compliance_needs) {
-                        personalizedRecommendations += `<li><strong>Compliance Needs:</strong> Choose cloud services that are compliant with industry standards and regulations.</li>`;
-                    }
-                    if (decodedData.nlp_requirements) {
-                        personalizedRecommendations += `<li><strong>Additional Requirements:</strong> ${decodedData.nlp_requirements}</li>`;
-                    }
-                    personalizedRecommendations += `</ul>`;
-                }
-
-                responseContent.innerHTML = formattedData;
-                recommendations.innerHTML = personalizedRecommendations;
+                // Get user's email address dynamically
+                const email = new URLSearchParams(window.location.search).get('email') || 'info@your-domain.com';
 
                 // CTA for emailing report
                 document.getElementById('emailReport').addEventListener('click', () => {
-                    window.location.href = `mailto:${decodedData.email}?subject=Cloud%20Readiness%20Report&body=Please%20find%20attached%20the%20Cloud%20Readiness%20report.`;
+                    const emailBody = `CloudReadyAI Recommendations\n\n${decodedData}\n\nContact Information:\nEmail: ${email}`;
+                    window.location.href = `mailto:${email}?subject=Cloud%20Readiness%20Report&body=${encodeURIComponent(emailBody)}`;
                 });
 
                 // CTA for downloading report
@@ -144,7 +114,7 @@
                     const reportTemplate = `
                         CloudReadyAI Recommendations
 
-                        ${personalizedRecommendations.replace(/<[^>]*>?/gm, '')}
+                        ${decodedData}
 
                         ---
 
@@ -161,12 +131,12 @@
                 });
 
             } catch (error) {
-                responseContent.textContent = 'Error parsing data. Please try again.';
+                recommendations.textContent = 'Error parsing data. Please try again.';
                 progressBar.style.width = '0%';
                 progressBar.textContent = '0%';
             }
         } else {
-            responseContent.textContent = 'No data available. Please try again.';
+            recommendations.textContent = 'No data available. Please try again.';
             progressBar.style.width = '0%';
             progressBar.textContent = '0%';
         }
