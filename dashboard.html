@@ -19,7 +19,7 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
+        h1, h2 {
             color: #333;
         }
         .content {
@@ -67,8 +67,10 @@
         <h1>Cloud Readiness Dashboard</h1>
         <div id="responseContent" class="content"></div>
         <div class="progress-bar">
-            <div id="progress" class="progress" style="width: 0%;">0%</div>
+            <div id="progress" class="progress" style="width: 50%;">50%</div>
         </div>
+        <h2>Personalized Recommendations</h2>
+        <div id="recommendations" class="content"></div>
         <div class="cta">
             <button onclick="window.location.href='mailto:your-email@example.com?subject=Cloud%20Readiness%20Report&body=Please%20find%20attached%20the%20Cloud%20Readiness%20report.'">Email Report</button>
             <button onclick="window.location.href='https://your-cloud-readiness-report-url.com'">Download Report</button>
@@ -84,24 +86,33 @@
         // Display the OpenAI response or an error message
         const responseContent = document.getElementById('responseContent');
         const progressBar = document.getElementById('progress');
+        const recommendations = document.getElementById('recommendations');
 
         if (data) {
             try {
                 const decodedData = JSON.parse(decodeURIComponent(data));
                 let formattedData = '';
-                let progress = 0;
+                let personalizedRecommendations = '';
 
                 for (const [key, value] of Object.entries(decodedData)) {
                     formattedData += `<strong>${key}:</strong> ${value}<br>`;
-                    // Example logic for progress calculation
-                    if (value !== '') {
-                        progress += 12.5; // Assuming 8 fields for simplicity (100 / 8 = 12.5)
-                    }
                 }
 
+                // Generate personalized recommendations
+                personalizedRecommendations += `<p>Based on the provided information, we recommend the following actions:</p>`;
+                personalizedRecommendations += `<ul>`;
+                personalizedRecommendations += `<li><strong>Business Type:</strong> For a ${decodedData.business_type} business in the ${decodedData.industry} industry, consider scalable cloud solutions to accommodate future growth.</li>`;
+                personalizedRecommendations += `<li><strong>Current Infrastructure:</strong> Since your current infrastructure is ${decodedData.current_infrastructure}, explore cloud services that provide seamless migration and integration with on-premise systems.</li>`;
+                if (decodedData.security_requirements) {
+                    personalizedRecommendations += `<li><strong>Security Requirements:</strong> Ensure your cloud provider offers robust security measures to meet your specific requirements.</li>`;
+                }
+                if (decodedData.compliance_needs) {
+                    personalizedRecommendations += `<li><strong>Compliance Needs:</strong> Choose cloud services that are compliant with industry standards and regulations.</li>`;
+                }
+                personalizedRecommendations += `</ul>`;
+
                 responseContent.innerHTML = formattedData;
-                progressBar.style.width = `${progress}%`;
-                progressBar.textContent = `${Math.round(progress)}%`;
+                recommendations.innerHTML = personalizedRecommendations;
 
             } catch (error) {
                 responseContent.textContent = 'Error parsing data. Please try again.';
