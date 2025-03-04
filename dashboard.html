@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -82,7 +82,7 @@
     <script>
         // Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const data = urlParams.get('data');
+        const encodedData = urlParams.get('data');
 
         // Display the OpenAI response or an error message
         const userNameElement = document.getElementById('userName');
@@ -90,9 +90,10 @@
         const progressBar = document.getElementById('progress');
         const recommendations = document.getElementById('recommendations');
 
-        if (data) {
+        if (encodedData) {
             try {
-                const parsedData = JSON.parse(data);
+                const decodedData = decodeURIComponent(encodedData);
+                const parsedData = JSON.parse(decodedData);
 
                 // Display user information
                 let userInfo = '';
@@ -131,7 +132,7 @@
                         ---
 
                         Contact Information:
-                        Email: info@your-domain.com
+                        Email: ${email}
                     `;
                     const blob = new Blob([reportTemplate], { type: 'text/plain;charset=utf-8' });
                     const link = document.createElement('a');
