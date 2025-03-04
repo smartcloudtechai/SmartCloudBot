@@ -58,7 +58,7 @@
         const progressBar = document.getElementById('progress-bar');
         if (formData.input_type === 'structured') {
             progressBar.style.width = '80%';
-        } else {
+        } else if (formData.input_type === 'nlp') {
             progressBar.style.width = '50%';  // Adjust according to other inputs
         }
     </script>
