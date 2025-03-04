@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Cloud Readiness Dashboard</h1>
-        
+
         <!-- Progress Bar -->
         <div class="progress-container">
             <div class="progress-bar" id="progress-bar" style="width: 80%;"></div>
@@ -52,10 +52,14 @@
         const aiResponse = localStorage.getItem('ai_response');
 
         // Display AI response or a default message if none is found
-        if (aiResponse) {
-            document.getElementById('ai-response').textContent = aiResponse;
+        document.getElementById('ai-response').textContent = aiResponse || 'No AI response found.';
+
+        // Update progress bar
+        const progressBar = document.getElementById('progress-bar');
+        if (formData.input_type === 'structured') {
+            progressBar.style.width = '80%';
         } else {
-            document.getElementById('ai-response').textContent = "No AI response found.";
+            progressBar.style.width = '50%';  // Adjust according to other inputs
         }
     </script>
 </body>
