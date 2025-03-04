@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -92,20 +92,32 @@
 
         if (data) {
             try {
-                const decodedData = decodeURIComponent(data); // Decoded data is already in text form
+                const parsedData = JSON.parse(data);
 
-                // Assuming that the data sent to dashboard.html is the OpenAI response in text format
-                const formattedData = `<p>${decodedData}</p>`;
-                
-                // Display the OpenAI response
-                recommendations.innerHTML = formattedData;
+                // Display user information
+                let userInfo = '';
+                for (const [key, value] of Object.entries(parsedData)) {
+                    if (key !== 'ai_response') {
+                        userInfo += `<strong>${key}:</strong> ${value}<br>`;
+                    }
+                }
+                responseContent.innerHTML = userInfo;
+
+                // Display AI response
+                const aiResponse = parsedData.ai_response || 'No AI response available';
+                recommendations.innerHTML = `<p>${aiResponse}</p>`;
+
+                // Set user name
+                if (parsedData.name) {
+                    userNameElement.innerHTML = `<h2>Thank you, ${parsedData.name}!</h2>`;
+                }
 
                 // Get user's email address dynamically
-                const email = new URLSearchParams(window.location.search).get('email') || 'info@your-domain.com';
+                const email = parsedData.email || 'info@your-domain.com';
 
                 // CTA for emailing report
                 document.getElementById('emailReport').addEventListener('click', () => {
-                    const emailBody = `CloudReadyAI Recommendations\n\n${decodedData}\n\nContact Information:\nEmail: ${email}`;
+                    const emailBody = `CloudReadyAI Recommendations\n\n${aiResponse}\n\nContact Information:\nEmail: ${email}`;
                     window.location.href = `mailto:${email}?subject=Cloud%20Readiness%20Report&body=${encodeURIComponent(emailBody)}`;
                 });
 
@@ -114,7 +126,7 @@
                     const reportTemplate = `
                         CloudReadyAI Recommendations
 
-                        ${decodedData}
+                        ${aiResponse}
 
                         ---
 
