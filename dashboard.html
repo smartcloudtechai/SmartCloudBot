@@ -107,9 +107,9 @@
                     userNameElement.innerHTML = `<h2>Thank you, ${decodedData.name}!</h2>`;
                 }
 
-                // Generate personalized recommendations
+                // Display the OpenAI response if available, otherwise use default recommendations
                 if (decodedData.ai_response) {
-                    personalizedRecommendations = decodedData.ai_response;
+                    personalizedRecommendations += `<p>${decodedData.ai_response}</p>`;
                 } else {
                     personalizedRecommendations += `<p>Based on the provided information, we recommend the following actions:</p>`;
                     personalizedRecommendations += `<ul>`;
