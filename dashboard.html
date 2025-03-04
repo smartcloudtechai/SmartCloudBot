@@ -5,130 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Readiness Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
-
-        .form-data, .ai-response {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-data pre, .ai-response pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            background-color: #ecf0f1;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 25px;
-            background-color: #ddd;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 80%; /* Adjust based on your logic */
-            background-color: #3498db;
-            border-radius: 8px;
-            text-align: center;
-            line-height: 25px;
-            color: white;
-            font-weight: bold;
-        }
-
-        .cta-section {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .cta-button {
-            padding: 15px 30px;
-            background-color: #3498db;
-            color: white;
-            font-size: 18px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-
-        .cta-button:hover {
-            background-color: #2980b9;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <h1>Cloud Readiness Dashboard</h1>
-
-        <!-- Progress Bar Section -->
+        
+        <!-- Progress Bar -->
         <div class="progress-container">
-            <div class="progress-bar">
-                80% Completed
-            </div>
+            <div class="progress-bar" id="progress-bar" style="width: 80%;"></div>
         </div>
 
-        <!-- Form Data Section -->
-        <div class="form-data">
-            <h2>Form Data</h2>
-            <pre id="formData"></pre>
-        </div>
+        <!-- Form Data -->
+        <h2>Form Data</h2>
+        <pre id="form-data"></pre>
 
-        <!-- AI Response Section -->
-        <div class="ai-response">
-            <h2>AI Response</h2>
-            <pre id="aiResponse">Loading...</pre>
-        </div>
+        <!-- AI Response -->
+        <h2>AI Response</h2>
+        <pre id="ai-response">Loading...</pre>
 
-        <!-- Call to Action (CTA) -->
-        <div class="cta-section">
+        <!-- CTA Section -->
+        <div class="cta">
             <p>Ready to proceed with your cloud readiness assessment?</p>
-            <a href="index.html" class="cta-button">Start a New Assessment</a>
+            <a href="index.html" class="cta-button">Start New Assessment</a>
         </div>
     </div>
 
     <script>
-        // Fetch and display form data passed via URL
-        const params = new URLSearchParams(window.location.search);
-        const formData = {};
-        params.forEach((value, key) => {
-            formData[key] = value;
-        });
+        // Get query parameters from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const formData = {
+            input_type: urlParams.get('input_type'),
+            name: urlParams.get('name'),
+            email: urlParams.get('email'),
+            business_type: urlParams.get('business_type'),
+            industry: urlParams.get('industry'),
+            current_infrastructure: urlParams.get('current_infrastructure'),
+            application_dependencies: urlParams.get('application_dependencies'),
+            security_requirements: urlParams.get('security_requirements'),
+            compliance_needs: urlParams.get('compliance_needs')
+        };
 
-        // Display form data on the page
-        document.getElementById('formData').textContent = JSON.stringify(formData, null, 2);
+        // Display the form data on the page
+        document.getElementById('form-data').textContent = JSON.stringify(formData, null, 2);
 
-        // Fetch the AI response from localStorage
+        // Get AI response from localStorage
         const aiResponse = localStorage.getItem('ai_response');
 
-        // Display the AI response
+        // Display AI response or a default message if none is found
         if (aiResponse) {
-            document.getElementById('aiResponse').textContent = aiResponse;
+            document.getElementById('ai-response').textContent = aiResponse;
         } else {
-            document.getElementById('aiResponse').textContent = 'No AI response found.';
+            document.getElementById('ai-response').textContent = "No AI response found.";
         }
     </script>
 </body>
