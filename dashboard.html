@@ -64,11 +64,12 @@
         const urlParams = new URLSearchParams(window.location.search);
         const data = urlParams.get('data');
 
-        // Display the OpenAI response
+        // Display the OpenAI response or an error message
+        const responseContent = document.getElementById('responseContent');
         if (data) {
-            document.getElementById('responseContent').textContent = decodeURIComponent(data);
+            responseContent.textContent = decodeURIComponent(data);
         } else {
-            document.getElementById('responseContent').textContent = 'No data available.';
+            responseContent.textContent = 'No data available. Please try again.';
         }
     </script>
 </body>
