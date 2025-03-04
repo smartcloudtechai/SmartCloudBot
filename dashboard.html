@@ -5,89 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Readiness Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .progress-bar {
-            background-color: #4caf50;
-            height: 25px;
-            width: 50%; /* Adjust this value dynamically based on progress */
-        }
-    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h1>
-        <div class="section">
-            <h2>Personalized Recommendations</h2>
-            <pre id="recommendations"></pre>
+        <h1>Cloud Readiness Dashboard</h1>
+        
+        <!-- Form Data Section -->
+        <div class="data-section">
+            <h2>Form Data</h2>
+            <div class="data-group">
+                <label for="input_type">Input Type:</label>
+                <input type="text" id="input_type" disabled>
+            </div>
+            <div class="data-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" disabled>
+            </div>
+            <div class="data-group">
+                <label for="email">Email Address:</label>
+                <input type="text" id="email" disabled>
+            </div>
+            <div class="data-group">
+                <label for="business_type">Business Type:</label>
+                <input type="text" id="business_type" disabled>
+            </div>
+            <div class="data-group">
+                <label for="industry">Industry:</label>
+                <input type="text" id="industry" disabled>
+            </div>
+            <div class="data-group">
+                <label for="current_infrastructure">Current Infrastructure:</label>
+                <input type="text" id="current_infrastructure" disabled>
+            </div>
+            <div class="data-group">
+                <label for="application_dependencies">Application Dependencies:</label>
+                <input type="text" id="application_dependencies" disabled>
+            </div>
+            <div class="data-group">
+                <label for="security_requirements">Security Requirements:</label>
+                <input type="text" id="security_requirements" disabled>
+            </div>
+            <div class="data-group">
+                <label for="compliance_needs">Compliance Needs:</label>
+                <input type="text" id="compliance_needs" disabled>
+            </div>
         </div>
-        <div class="section">
-            <h2>Progress Tracker</h2>
-            <div class="progress-bar"></div>
-            <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
-        </div>
-        <div class="section">
-            <h2>Additional Resources</h2>
-            <ul>
-                <li><a href="https://azure.microsoft.com/en-us/overview/security/">Explore Azure Security</a></li>
-                <li><a href="#">Read Whitepaper on Cloud Migration</a></li>
-                <li><a href="#">Case Study: Successful Cloud Transition</a></li>
-            </ul>
-        </div>
-        <div class="section">
-            <h2>Take Action</h2>
-            <button onclick="scheduleCall()">Schedule a Call</button>
-            <button onclick="downloadReport()">Download Detailed Report</button>
-            <button onclick="askQuestion()">Ask a Question</button>
+
+        <!-- AI Response Section -->
+        <div class="ai-response-section">
+            <h2>AI Response</h2>
+            <div class="data-group">
+                <textarea id="ai-response" rows="6" disabled></textarea>
+            </div>
         </div>
     </div>
 
     <script>
-        // Function to get URL parameters
-        function getURLParameter(name) {
-            return new URLSearchParams(window.location.search).get(name);
-        }
-
-        // Populate dashboard with user data
-        document.addEventListener('DOMContentLoaded', function () {
+        // Function to get query parameters from the URL
+        function getQueryParams() {
             const params = new URLSearchParams(window.location.search);
-            const userName = params.get('name') || 'User'; // Using name from the URL parameters
-            const recommendations = decodeURIComponent(params.get('data')) || 'No recommendations available.';
-
-            document.getElementById('user-name').textContent = userName;
-            document.getElementById('recommendations').textContent = recommendations;
-        });
-
-        function scheduleCall() {
-            // Prompt the user to choose a time for the follow-up call
-            const callTime = prompt("Please choose a time for the follow-up call (e.g., 3 PM, tomorrow at 2 PM):");
-            if (callTime) {
-                alert(`Your call has been scheduled for: ${callTime}. Our team will get in touch with you.`);
-            }
+            let data = {};
+            params.forEach((value, key) => {
+                data[key] = decodeURIComponent(value);
+            });
+            return data;
         }
 
-        function downloadReport() {
-            // Initiate a download for the detailed report (e.g., a PDF file)
-            // Replace 'report.pdf' with the actual URL of your report file
-            const reportUrl = 'path/to/your/report.pdf';
-            window.location.href = reportUrl;
-        }
+        // Fill in form data from URL
+        const formData = getQueryParams();
+        document.getElementById('input_type').value = formData.input_type || '';
+        document.getElementById('name').value = formData.name || '';
+        document.getElementById('email').value = formData.email || '';
+        document.getElementById('business_type').value = formData.business_type || '';
+        document.getElementById('industry').value = formData.industry || '';
+        document.getElementById('current_infrastructure').value = formData.current_infrastructure || '';
+        document.getElementById('application_dependencies').value = formData.application_dependencies || '';
+        document.getElementById('security_requirements').value = formData.security_requirements || '';
+        document.getElementById('compliance_needs').value = formData.compliance_needs || '';
 
-        function askQuestion() {
-            // Prompt the user to ask a question and handle the response
-            const question = prompt("What question would you like to ask?");
-            if (question) {
-                alert("Thank you! We'll get back to you with an answer shortly.");
-            }
+        // Fill in AI response from localStorage
+        const aiResponse = localStorage.getItem('ai_response');
+        const aiResponseField = document.getElementById('ai-response');
+        if (aiResponse) {
+            aiResponseField.value = aiResponse;
+        } else {
+            aiResponseField.value = "No AI response available.";
         }
     </script>
 </body>
