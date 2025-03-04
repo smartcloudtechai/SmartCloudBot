@@ -79,23 +79,26 @@
     </div>
 
     <script>
-        // Get URL parameters
+        // Retrieve the 'data' parameter from the URL using JavaScript
         const urlParams = new URLSearchParams(window.location.search);
-        const encodedData = urlParams.get('data');  // This gets the value of the 'data' parameter
+        const encodedData = urlParams.get('data');  // Retrieve the value of 'data' parameter
 
-        // Display the OpenAI response or an error message
+        // Get the element where the recommendation will be displayed
         const recommendations = document.getElementById('recommendations');
 
+        // Check if the 'data' parameter is present and decode it
         if (encodedData) {
             try {
                 const decodedData = decodeURIComponent(encodedData);  // Decode the URL-encoded data
 
-                // Display AI response directly
+                // Display the decoded AI response on the page
                 recommendations.innerHTML = `<p>${decodedData}</p>`;
             } catch (error) {
+                // If there's an error decoding the data, display a friendly message
                 recommendations.textContent = 'Error parsing data. Please try again.';
             }
         } else {
+            // If no data parameter is found, show a message indicating that
             recommendations.textContent = 'No data available. Please try again.';
         }
     </script>
