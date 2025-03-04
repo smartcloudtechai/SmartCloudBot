@@ -140,8 +140,19 @@
 
                 // CTA for downloading report
                 document.getElementById('downloadReport').addEventListener('click', () => {
-                    const reportContent = personalizedRecommendations.replace(/<[^>]*>?/gm, ''); // Strip HTML tags
-                    const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+                    const reportTemplate = `
+                        CloudReadyAI Recommendations
+
+                        Based on the provided information, we recommend the following actions:
+
+                        ${personalizedRecommendations.replace(/<[^>]*>?/gm, '')}
+
+                        ---
+
+                        Contact Information:
+                        Email: info@your-domain.com
+                    `;
+                    const blob = new Blob([reportTemplate], { type: 'text/plain;charset=utf-8' });
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(blob);
                     link.download = 'CloudReadinessReport.txt';
