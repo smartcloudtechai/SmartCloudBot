@@ -80,27 +80,33 @@
 
     <script>
         // Retrieve the 'data' parameter from the URL using JavaScript
-        const urlParams = new URLSearchParams(window.location.search);
-        const encodedData = urlParams.get('data');  // Retrieve the value of 'data' parameter
+const urlParams = new URLSearchParams(window.location.search);
+const encodedData = urlParams.get('data');  // Retrieve the value of 'data' parameter
 
-        // Get the element where the recommendation will be displayed
-        const recommendations = document.getElementById('recommendations');
+console.log('Encoded Data:', encodedData); // Log the encoded data
 
-        // Check if the 'data' parameter is present and decode it
-        if (encodedData) {
-            try {
-                const decodedData = decodeURIComponent(encodedData);  // Decode the URL-encoded data
+// Get the element where the recommendation will be displayed
+const recommendations = document.getElementById('recommendations');
 
-                // Display the decoded AI response on the page
-                recommendations.innerHTML = `<p>${decodedData}</p>`;
-            } catch (error) {
-                // If there's an error decoding the data, display a friendly message
-                recommendations.textContent = 'Error parsing data. Please try again.';
-            }
-        } else {
-            // If no data parameter is found, show a message indicating that
-            recommendations.textContent = 'No data available. Please try again.';
-        }
+// Check if the 'data' parameter is present and decode it
+if (encodedData) {
+    try {
+        const decodedData = decodeURIComponent(encodedData);  // Decode the URL-encoded data
+        
+        console.log('Decoded Data:', decodedData); // Log the decoded data
+
+        // Display the decoded AI response on the page
+        recommendations.innerHTML = `<p>${decodedData}</p>`;
+    } catch (error) {
+        // If there's an error decoding the data, display a friendly message
+        console.log('Error decoding data:', error); // Log any error
+        recommendations.textContent = 'Error parsing data. Please try again.';
+    }
+} else {
+    // If no data parameter is found, show a message indicating that
+    recommendations.textContent = 'No data available. Please try again.';
+}
+
     </script>
 </body>
 </html>
