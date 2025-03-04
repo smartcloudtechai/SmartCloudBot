@@ -90,11 +90,9 @@
         if (encodedData) {
             try {
                 const decodedData = decodeURIComponent(encodedData);
-                const parsedData = JSON.parse(decodedData);
 
-                // Display AI response in text format
-                const aiResponse = parsedData.ai_response || 'No AI response available';
-                recommendations.innerHTML = `<p>${aiResponse}</p>`;
+                // Display AI response directly
+                recommendations.innerHTML = `<p>${decodedData}</p>`;
 
             } catch (error) {
                 recommendations.textContent = 'Error parsing data. Please try again.';
