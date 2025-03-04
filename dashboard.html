@@ -73,9 +73,9 @@
         <h2>Personalized Recommendations</h2>
         <div id="recommendations" class="content"></div>
         <div class="cta">
-            <button onclick="window.location.href='mailto:your-email@example.com?subject=Cloud%20Readiness%20Report&body=Please%20find%20attached%20the%20Cloud%20Readiness%20report.'">Email Report</button>
-            <button onclick="window.location.href='https://your-cloud-readiness-report-url.com'">Download Report</button>
-            <button onclick="window.location.href='tel:+1234567890'">Call Us</button>
+            <button id="emailReport">Email Report</button>
+            <button id="downloadReport">Download Report</button>
+            <button onclick="window.location.href='mailto:info@your-domain.com?subject=Cloud%20Readiness%20Inquiry'">Contact Us</button>
         </div>
     </div>
 
@@ -132,6 +132,23 @@
 
                 responseContent.innerHTML = formattedData;
                 recommendations.innerHTML = personalizedRecommendations;
+
+                // CTA for emailing report
+                document.getElementById('emailReport').addEventListener('click', () => {
+                    window.location.href = `mailto:${decodedData.email}?subject=Cloud%20Readiness%20Report&body=Please%20find%20attached%20the%20Cloud%20Readiness%20report.`;
+                });
+
+                // CTA for downloading report
+                document.getElementById('downloadReport').addEventListener('click', () => {
+                    const reportContent = personalizedRecommendations.replace(/<[^>]*>?/gm, ''); // Strip HTML tags
+                    const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'CloudReadinessReport.txt';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
 
             } catch (error) {
                 responseContent.textContent = 'Error parsing data. Please try again.';
