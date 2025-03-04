@@ -79,22 +79,25 @@
     </div>
 
     <script>
-        // Retrieve AI response from localStorage
-        const aiResponse = localStorage.getItem('ai_response');
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedData = urlParams.get('data');  // This gets the value of the 'data' parameter
 
+        // Display the OpenAI response or an error message
         const recommendations = document.getElementById('recommendations');
-        const responseContent = document.getElementById('responseContent');
 
-        if (aiResponse) {
-            // If the AI response exists, display it
-            recommendations.innerHTML = `<p>${aiResponse}</p>`;
+        if (encodedData) {
+            try {
+                const decodedData = decodeURIComponent(encodedData);  // Decode the URL-encoded data
+
+                // Display AI response directly
+                recommendations.innerHTML = `<p>${decodedData}</p>`;
+            } catch (error) {
+                recommendations.textContent = 'Error parsing data. Please try again.';
+            }
         } else {
-            // If no AI response, show a default message
-            recommendations.textContent = 'No AI response found. Please try again.';
+            recommendations.textContent = 'No data available. Please try again.';
         }
-
-        // Optionally, can clear the response from localStorage after displaying it
-        // localStorage.removeItem('ai_response');
     </script>
 </body>
 </html>
