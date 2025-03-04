@@ -7,17 +7,58 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Cloud Readiness Dashboard</h1>
+    <form id="dashboardForm">
+        <h1>CloudReadyAI - Dashboard</h1>
+        
+        <!-- Display Form Data -->
+        <div id="form-data-section">
+            <h2>Form Data</h2>
+            <div class="input-group">
+                <label for="input_type">Input Type:</label>
+                <input type="text" id="input_type" disabled>
+            </div>
+            <div class="input-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" disabled>
+            </div>
+            <div class="input-group">
+                <label for="email">Email Address:</label>
+                <input type="text" id="email" disabled>
+            </div>
+            <div class="input-group">
+                <label for="business_type">Business Type:</label>
+                <input type="text" id="business_type" disabled>
+            </div>
+            <div class="input-group">
+                <label for="industry">Industry:</label>
+                <input type="text" id="industry" disabled>
+            </div>
+            <div class="input-group">
+                <label for="current_infrastructure">Current Infrastructure:</label>
+                <input type="text" id="current_infrastructure" disabled>
+            </div>
+            <div class="input-group">
+                <label for="application_dependencies">Application Dependencies:</label>
+                <input type="text" id="application_dependencies" disabled>
+            </div>
+            <div class="input-group">
+                <label for="security_requirements">Security Requirements:</label>
+                <input type="text" id="security_requirements" disabled>
+            </div>
+            <div class="input-group">
+                <label for="compliance_needs">Compliance Needs:</label>
+                <input type="text" id="compliance_needs" disabled>
+            </div>
+        </div>
 
-    <div id="summary">
-        <h2>Form Data</h2>
-        <pre id="formData"></pre>
-    </div>
-
-    <div id="aiResponse">
-        <h2>AI Response</h2>
-        <pre id="aiResponseText"></pre>
-    </div>
+        <!-- Display AI Response -->
+        <div id="ai-response-section">
+            <h2>AI Response</h2>
+            <div class="input-group">
+                <textarea id="ai-response" rows="6" disabled></textarea>
+            </div>
+        </div>
+    </form>
 
     <script>
         // Function to extract query params from the URL
@@ -32,12 +73,23 @@
 
         // Display form data
         const formData = getQueryParams();
-        document.getElementById('formData').textContent = JSON.stringify(formData, null, 2);
+        document.getElementById('input_type').value = formData.input_type || '';
+        document.getElementById('name').value = formData.name || '';
+        document.getElementById('email').value = formData.email || '';
+        document.getElementById('business_type').value = formData.business_type || '';
+        document.getElementById('industry').value = formData.industry || '';
+        document.getElementById('current_infrastructure').value = formData.current_infrastructure || '';
+        document.getElementById('application_dependencies').value = formData.application_dependencies || '';
+        document.getElementById('security_requirements').value = formData.security_requirements || '';
+        document.getElementById('compliance_needs').value = formData.compliance_needs || '';
 
         // Display AI response from localStorage
         const aiResponse = localStorage.getItem('ai_response');
+        const aiResponseField = document.getElementById('ai-response');
         if (aiResponse) {
-            document.getElementById('aiResponseText').textContent = aiResponse;
+            aiResponseField.value = aiResponse;
+        } else {
+            aiResponseField.value = "No AI response available.";
         }
     </script>
 </body>
