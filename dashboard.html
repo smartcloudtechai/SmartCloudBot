@@ -4,109 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Readiness Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            color: #333;
-        }
-        .content {
-            background-color: #f8f8f8;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .cta {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .cta button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .cta button:hover {
-            background-color: #45a049;
-        }
-        .progress-bar {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        .progress {
-            height: 24px;
-            background-color: #4CAF50;
-            line-height: 24px;
-            color: white;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Cloud Readiness Dashboard</h1>
-        <div id="responseContent" class="content"></div>
-        <div class="progress-bar">
-            <div id="progress" class="progress" style="width: 30%;">30%</div>
-        </div>
-        <h2>Personalized Recommendations</h2>
-        <div id="recommendations" class="content"></div>
-        <div class="cta">
-            <button id="emailReport">Email Report</button>
-            <button id="downloadReport">Download Report</button>
-            <button onclick="window.location.href='mailto:info@your-domain.com?subject=Cloud%20Readiness%20Inquiry'">Contact Us</button>
-        </div>
+    <h1>Cloud Readiness Dashboard</h1>
+
+    <div id="summary">
+        <h2>Form Data</h2>
+        <pre id="formData"></pre>
+    </div>
+
+    <div id="aiResponse">
+        <h2>AI Response</h2>
+        <pre id="aiResponseText"></pre>
     </div>
 
     <script>
-        // Retrieve the 'data' parameter from the URL using JavaScript
-const urlParams = new URLSearchParams(window.location.search);
-const encodedData = urlParams.get('data');  // Retrieve the value of 'data' parameter
+        // Function to extract query params from the URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            let data = {};
+            params.forEach((value, key) => {
+                data[key] = decodeURIComponent(value);
+            });
+            return data;
+        }
 
-console.log('Encoded Data:', encodedData); // Log the encoded data
+        // Display form data
+        const formData = getQueryParams();
+        document.getElementById('formData').textContent = JSON.stringify(formData, null, 2);
 
-// Get the element where the recommendation will be displayed
-const recommendations = document.getElementById('recommendations');
-
-// Check if the 'data' parameter is present and decode it
-if (encodedData) {
-    try {
-        const decodedData = decodeURIComponent(encodedData);  // Decode the URL-encoded data
-        
-        console.log('Decoded Data:', decodedData); // Log the decoded data
-
-        // Display the decoded AI response on the page
-        recommendations.innerHTML = `<p>${decodedData}</p>`;
-    } catch (error) {
-        // If there's an error decoding the data, display a friendly message
-        console.log('Error decoding data:', error); // Log any error
-        recommendations.textContent = 'Error parsing data. Please try again.';
-    }
-} else {
-    // If no data parameter is found, show a message indicating that
-    recommendations.textContent = 'No data available. Please try again.';
-}
-
+        // Display AI response from localStorage
+        const aiResponse = localStorage.getItem('ai_response');
+        if (aiResponse) {
+            document.getElementById('aiResponseText').textContent = aiResponse;
+        }
     </script>
 </body>
 </html>
