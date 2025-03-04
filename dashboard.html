@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -46,12 +46,27 @@
         .cta button:hover {
             background-color: #45a049;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Cloud Readiness Dashboard</h1>
-        <pre id="responseContent"></pre>
+        <div id="responseContent"></div>
         <div class="cta">
             <button onclick="window.location.href='mailto:your-email@example.com?subject=Cloud%20Readiness%20Report&body=Please%20find%20attached%20the%20Cloud%20Readiness%20report.'">Email Report</button>
             <button onclick="window.location.href='https://your-cloud-readiness-report-url.com'">Download Report</button>
@@ -67,7 +82,17 @@
         // Display the OpenAI response or an error message
         const responseContent = document.getElementById('responseContent');
         if (data) {
-            responseContent.textContent = decodeURIComponent(data);
+            try {
+                const decodedData = JSON.parse(decodeURIComponent(data));
+                let formattedData = '<table>';
+                for (const [key, value] of Object.entries(decodedData)) {
+                    formattedData += `<tr><th>${key}</th><td>${value}</td></tr>`;
+                }
+                formattedData += '</table>';
+                responseContent.innerHTML = formattedData;
+            } catch (error) {
+                responseContent.textContent = 'Error parsing data. Please try again.';
+            }
         } else {
             responseContent.textContent = 'No data available. Please try again.';
         }
