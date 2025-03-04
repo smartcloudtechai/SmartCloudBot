@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ v<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -124,6 +124,8 @@
                 }
                 if (decodedData.nlp_requirements) {
                     personalizedRecommendations += `<li><strong>Additional Requirements:</strong> ${decodedData.nlp_requirements}</li>`;
+                } else if (decodedData.ai_response) {
+                    personalizedRecommendations += `<li>${decodedData.ai_response}</li>`;
                 }
                 personalizedRecommendations += `</ul>`;
 
