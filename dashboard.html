@@ -1,4 +1,4 @@
- v<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -97,7 +97,7 @@
                 let personalizedRecommendations = '';
 
                 for (const [key, value] of Object.entries(decodedData)) {
-                    if (key !== 'nlp_requirements') {
+                    if (key !== 'nlp_requirements' && key !== 'ai_response') {
                         formattedData += `<strong>${key}:</strong> ${value}<br>`;
                     }
                 }
@@ -124,7 +124,8 @@
                 }
                 if (decodedData.nlp_requirements) {
                     personalizedRecommendations += `<li><strong>Additional Requirements:</strong> ${decodedData.nlp_requirements}</li>`;
-                } else if (decodedData.ai_response) {
+                }
+                if (decodedData.ai_response) {
                     personalizedRecommendations += `<li>${decodedData.ai_response}</li>`;
                 }
                 personalizedRecommendations += `</ul>`;
