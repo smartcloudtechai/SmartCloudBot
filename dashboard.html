@@ -65,9 +65,10 @@
 <body>
     <div class="container">
         <h1>Cloud Readiness Dashboard</h1>
+        <div id="userName" class="content"></div>
         <div id="responseContent" class="content"></div>
         <div class="progress-bar">
-            <div id="progress" class="progress" style="width: 50%;">50%</div>
+            <div id="progress" class="progress" style="width: 30%;">30%</div>
         </div>
         <h2>Personalized Recommendations</h2>
         <div id="recommendations" class="content"></div>
@@ -84,6 +85,7 @@
         const data = urlParams.get('data');
 
         // Display the OpenAI response or an error message
+        const userNameElement = document.getElementById('userName');
         const responseContent = document.getElementById('responseContent');
         const progressBar = document.getElementById('progress');
         const recommendations = document.getElementById('recommendations');
@@ -100,10 +102,15 @@
                     }
                 }
 
+                // Set user name
+                if (decodedData.name) {
+                    userNameElement.innerHTML = `<h2>Thank you, ${decodedData.name}!</h2>`;
+                }
+
                 // Generate personalized recommendations
                 personalizedRecommendations += `<p>Based on the provided information, we recommend the following actions:</p>`;
                 personalizedRecommendations += `<ul>`;
-                if (decodedData.business_type) {
+                if (decodedData.business_type && decodedData.industry) {
                     personalizedRecommendations += `<li><strong>Business Type:</strong> For a ${decodedData.business_type} business in the ${decodedData.industry} industry, consider scalable cloud solutions to accommodate future growth.</li>`;
                 }
                 if (decodedData.current_infrastructure) {
