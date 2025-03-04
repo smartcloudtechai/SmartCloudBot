@@ -21,7 +21,9 @@
 
         <!-- AI Response -->
         <h2>AI Response</h2>
-        <pre id="ai-response">Loading...</pre>
+        <div class="ai-response">
+            <pre id="ai-response">Loading...</pre>
+        </div>
 
         <!-- CTA Section -->
         <div class="cta">
@@ -33,6 +35,8 @@
     <script>
         // Get query parameters from the URL
         const urlParams = new URLSearchParams(window.location.search);
+
+        // Extract form data from URL
         const formData = {
             input_type: urlParams.get('input_type'),
             name: urlParams.get('name'),
