@@ -21,14 +21,17 @@
 
         <!-- AI Response -->
         <h2>AI Response</h2>
-        <div class="ai-response">
-            <pre id="ai-response">Loading...</pre>
+        <div class="ai-response" id="ai-response">
+            <!-- AI response will be populated here -->
         </div>
 
         <!-- CTA Section -->
         <div class="cta">
             <p>Ready to proceed with your cloud readiness assessment?</p>
             <a href="index.html" class="cta-button">Start New Assessment</a>
+            <a href="mailto:contact@yourcompany.com" class="cta-button">Email</a>
+            <a href="report.pdf" class="cta-button">Download Report</a>
+            <a href="schedule-call.html" class="cta-button">Schedule a Call</a>
         </div>
     </div>
 
@@ -56,7 +59,12 @@
         const aiResponse = localStorage.getItem('ai_response');
 
         // Display AI response or a default message if none is found
-        document.getElementById('ai-response').textContent = aiResponse || 'No AI response found.';
+        const aiResponseElement = document.getElementById('ai-response');
+        if (aiResponse) {
+            aiResponseElement.innerHTML = `<div class="recommendation-box">${aiResponse}</div>`;
+        } else {
+            aiResponseElement.textContent = 'No AI response found.';
+        }
 
         // Update progress bar
         const progressBar = document.getElementById('progress-bar');
