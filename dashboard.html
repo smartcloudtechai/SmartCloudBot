@@ -72,15 +72,16 @@
 
                     // Extract and format AI response for Personalized Recommendations
                     let aiResponse = decodedData.ai_response || 'No recommendations available.';
-                    try {
-                        if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
-                            const parsedResponse = JSON.parse(aiResponse); // Parse nested JSON if needed
-                            aiResponse = parsedResponse.ai_response || 'No recommendations available.';
+                    if (typeof aiResponse === 'string') {
+                        // Attempt to parse stringified JSON if needed
+                        try {
+                            const parsedAIResponse = JSON.parse(aiResponse);
+                            aiResponse = parsedAIResponse.ai_response || 'No recommendations available.';
+                        } catch (e) {
+                            console.warn('AI response is already in plain text or cannot be parsed:', e);
                         }
-                        aiResponse = aiResponse.replace(/\\n/g, '\n'); // Format line breaks for better display
-                    } catch (e) {
-                        console.warn('Failed to parse AI response:', e);
                     }
+                    aiResponse = aiResponse.replace(/\\n/g, '\n'); // Format line breaks for better display
                     document.getElementById('recommendations').textContent = aiResponse;
 
                     // Populate form details
