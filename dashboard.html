@@ -124,21 +124,34 @@
     </div>
 
     <script>
-        // Function to populate data dynamically from URL
+        // Function to parse JSON data from URL
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
-            const userName = params.get('name') || 'User'; // Retrieve the user's name from the URL
-            const userEmail = params.get('email') || 'Not provided'; // Retrieve the user's email from the URL
-            const recommendations = decodeURIComponent(params.get('data')) || 'No recommendations available.';
+            const rawData = params.get('data'); // Get JSON data from the URL
 
-            // Dynamically update name, email, and recommendations
-            document.getElementById('user-name').textContent = userName;
-            document.getElementById('user-email').textContent = userEmail;
-            document.getElementById('recommendations').textContent = recommendations;
+            try {
+                const parsedData = JSON.parse(decodeURIComponent(rawData)); // Decode and parse JSON
+
+                // Dynamically update name, email, and AI recommendations
+                const userName = parsedData.name || 'User';
+                const userEmail = parsedData.email || 'Not provided';
+                const aiResponse = parsedData.ai_response || 'No recommendations available.';
+
+                // Update the respective fields
+                document.getElementById('user-name').textContent = userName;
+                document.getElementById('user-email').textContent = userEmail;
+                document.getElementById('recommendations').textContent = aiResponse;
+            } catch (error) {
+                console.error('Error parsing data:', error);
+
+                // Fallback in case of parsing issues
+                document.getElementById('user-name').textContent = 'User';
+                document.getElementById('user-email').textContent = 'Not provided';
+                document.getElementById('recommendations').textContent = 'Unable to load recommendations.';
+            }
         });
 
         function scheduleCall() {
-            // Prompt the user to choose a time for the follow-up call
             const callTime = prompt("Please choose a time for the follow-up call (e.g., 3 PM, tomorrow at 2 PM):");
             if (callTime) {
                 alert(`Your call has been scheduled for: ${callTime}. Our team will get in touch with you.`);
@@ -146,21 +159,20 @@
         }
 
         function downloadReport() {
-            // Generate a download of the recommendations report
-            const recommendations = document.getElementById('recommendations').textContent;
+            const userName = document.getElementById('user-name').textContent;
             const userEmail = document.getElementById('user-email').textContent;
-            const reportContent = `CloudReadyAI Recommendations\n\n${recommendations}\n\n---\n\nContact Information:\nEmail: ${userEmail}`;
+            const recommendations = document.getElementById('recommendations').textContent;
 
-            const blob = new Blob([reportContent], { type: "text/plain" });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = "CloudReadiness_Recommendations.txt";
+            const reportContent = `CloudReadyAI Recommendations\n\nUser: ${userName}\nEmail: ${userEmail}\n\nRecommendations:\n${recommendations}\n\n---\n\nContact Information:\nEmail: info@your-domain.com`;
+
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'CloudReadiness_Recommendations.txt';
             link.click();
         }
 
         function askQuestion() {
-            // Prompt the user to ask a question
             const question = prompt("What question would you like to ask?");
             if (question) {
                 alert("Thank you! We'll get back to you with an answer shortly.");
@@ -168,8 +180,7 @@
         }
 
         function returnToForm() {
-            // Redirect the user to the main form
-            window.location.href = "index.html";
+            window.location.href = 'index.html';
         }
     </script>
 </body>
