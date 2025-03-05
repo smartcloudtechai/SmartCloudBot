@@ -3,112 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Readiness Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .progress-bar {
-            background-color: #4caf50;
-            height: 25px;
-            width: 80%; /* Adjust this value dynamically based on progress */
-        }
-    </style>
+    <title>AI Dashboard</title>
+    <script>
+        window.onload = function() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedData = urlParams.get('data');
+
+            if (encodedData) {
+                const decodedData = JSON.parse(decodeURIComponent(encodedData));
+                console.log("Decoded data:", decodedData);
+
+                // Extract and use AI response
+                const aiResponse = decodedData.ai_response;
+
+                // Display AI response
+                if (aiResponse) {
+                    document.getElementById("ai-response").textContent = aiResponse;
+                } else {
+                    document.getElementById("ai-response").textContent = "No AI response available.";
+                }
+            } else {
+                console.log("No data found in URL");
+            }
+        };
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h1>
-        <div class="section">
-            <h2>Personalized Recommendations</h2>
-            <pre id="recommendations">No AI response available.</pre>
-        </div>
-        <div class="section">
-            <h2>Progress Tracker</h2>
-            <div class="progress-bar"></div>
-            <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
-        </div>
-        <div class="section">
-            <h2>Additional Resources</h2>
-            <ul>
-                <li><a href="https://azure.microsoft.com/en-us/overview/security/">Explore Azure Security</a></li>
-                <li><a href="#">Read Whitepaper on Cloud Migration</a></li>
-                <li><a href="#">Case Study: Successful Cloud Transition</a></li>
-            </ul>
-        </div>
-        <div class="section">
-            <h2>Take Action</h2>
-            <button onclick="scheduleCall()">Schedule a Call</button>
-            <button onclick="downloadReport()">Download Detailed Report</button>
-            <button onclick="askQuestion()">Ask a Question</button>
-        </div>
-    </div>
-
-    <script>
-        // Function to get URL parameters
-        function getURLParameter(name) {
-            return new URLSearchParams(window.location.search).get(name);
-        }
-
-        // Function to decode and parse the encoded data
-        function parseData() {
-            const encodedData = getURLParameter('data');
-            console.log('Encoded data:', encodedData);  // Debugging: log encoded data
-            if (encodedData) {
-                try {
-                    const decodedData = decodeURIComponent(encodedData); // Decode the URL encoded data
-                    console.log('Decoded data:', decodedData);  // Debugging: log decoded data
-                    const parsedData = JSON.parse(decodedData);  // Parse the JSON data
-
-                    // Populate dashboard with user data
-                    document.getElementById('user-name').textContent = parsedData.name || 'User';
-
-                    // Check if AI response exists and display it
-                    const aiResponse = parsedData.ai_response || 'No AI response available.';
-                    document.getElementById('recommendations').textContent = aiResponse;
-
-                    // You can add further details here if required
-                    console.log("Parsed Data: ", parsedData);
-
-                    // Optionally: Adjust progress bar based on your data
-                    document.querySelector('.progress-bar').style.width = "80%"; // Update dynamically if needed
-                    document.getElementById('progress-text').textContent = "50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.";
-
-                } catch (error) {
-                    console.error("Error parsing data: ", error);
-                    alert('Error parsing data. Please check the console for details.');
-                }
-            }
-        }
-
-        // Call the function when the page loads
-        window.onload = parseData;
-
-        function scheduleCall() {
-            const callTime = prompt("Please choose a time for the follow-up call (e.g., 3 PM, tomorrow at 2 PM):");
-            if (callTime) {
-                alert(`Your call has been scheduled for: ${callTime}. Our team will get in touch with you.`);
-            }
-        }
-
-        function downloadReport() {
-            const reportUrl = 'path/to/your/report.pdf';
-            window.location.href = reportUrl;
-        }
-
-        function askQuestion() {
-            const question = prompt("What question would you like to ask?");
-            if (question) {
-                alert("Thank you! We'll get back to you with an answer shortly.");
-            }
-        }
-    </script>
+    <h1>AI Dashboard</h1>
+    <div id="ai-response">Loading AI response...</div>
 </body>
 </html>
