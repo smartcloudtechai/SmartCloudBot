@@ -114,7 +114,7 @@
                         if (line.trim()) {
                             const recommendationCard = document.createElement('div');
                             recommendationCard.classList.add('recommendation-card');
-                            recommendationCard.innerHTML = `<h3>Recommendation ${index + 1}</h3><p>${line.trim()}</p>`;
+                            recommendationCard.innerHTML = `<p><b>Recommendation ${index + 1}:</b> ${line.trim()}</p>`;
                             recommendationsContainer.appendChild(recommendationCard);
                         }
                     });
@@ -137,12 +137,22 @@
         }
 
         function downloadReport() {
-            // Generate or fetch a dynamic report for download
-            const reportContent = "Detailed Cloud Readiness Report Content Goes Here.";
+            // Generate and format the report content
+            const recommendations = Array.from(document.querySelectorAll('.recommendation-card p'));
+            let reportContent = "CloudReadyAI Recommendations\n\n";
+            reportContent += "Based on the provided information, we recommend the following actions:\n\n";
+            recommendations.forEach((rec, index) => {
+                reportContent += `${index + 1}. ${rec.innerText}\n\n`;
+            });
+            reportContent += "---\n\n";
+            reportContent += "Contact Information:\n";
+            reportContent += "Email: info@your-domain.com\n";
+
+            // Create and download the file
             const blob = new Blob([reportContent], { type: "text/plain" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "cloud_readiness_report.txt"; // Change to .pdf if needed
+            link.download = "CloudReadiness_Recommendations.txt";
             link.click();
         }
 
