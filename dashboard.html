@@ -32,18 +32,18 @@
             margin: 0 0 10px;
             font-size: 18px;
             font-weight: bold;
-            color: black; /* Subheadings are bold and black */
+            color: black;
         }
         .recommendation-card p {
             margin: 0;
-            color: black; /* Regular black text for content */
+            color: black;
         }
         .progress-bar {
             background-color: #4caf50;
             height: 25px;
             width: 30%; /* Progress bar set to 30% */
             border-radius: 5px;
-            transition: width 0.5s ease; /* Smooth transition for aesthetic effect */
+            transition: width 0.5s ease;
         }
         .cta-buttons {
             margin-top: 20px;
@@ -59,6 +59,12 @@
         }
         .cta-buttons button:hover {
             background-color: #45a049;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
         }
     </style>
 </head>
@@ -87,6 +93,9 @@
             <button onclick="downloadReport()">Download Detailed Report</button>
             <button onclick="askQuestion()">Ask a Question</button>
             <button onclick="returnToForm()">Return to Main Form</button>
+        </div>
+        <div class="footer">
+            &copy; 2025 CloudReadyAI. All rights reserved.
         </div>
     </div>
 
