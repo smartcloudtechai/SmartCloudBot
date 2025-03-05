@@ -60,10 +60,12 @@
         // Function to decode and parse the encoded data
         function parseData() {
             const encodedData = getURLParameter('data');
+            console.log('Encoded data:', encodedData);  // Debugging: log encoded data
             if (encodedData) {
                 try {
-                    const decodedData = decodeURIComponent(encodedData);
-                    const parsedData = JSON.parse(decodedData);
+                    const decodedData = decodeURIComponent(encodedData); // Decode the URL encoded data
+                    console.log('Decoded data:', decodedData);  // Debugging: log decoded data
+                    const parsedData = JSON.parse(decodedData);  // Parse the JSON data
 
                     // Populate dashboard with user data
                     document.getElementById('user-name').textContent = parsedData.name || 'User';
@@ -78,6 +80,7 @@
 
                 } catch (error) {
                     console.error("Error parsing data: ", error);
+                    alert('Error parsing data. Please check the console for details.');
                 }
             }
         }
