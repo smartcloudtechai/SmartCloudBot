@@ -44,10 +44,6 @@
             <p>Cloud Readiness Requirements: <span id="form-nlp-requirements"></span></p>
         </div>
         <div class="section">
-            <h2>AI Response</h2>
-            <p id="ai-response-text">AI Response: <span id="ai-response"></span></p>
-        </div>
-        <div class="section">
             <h2>Progress Tracker</h2>
             <div class="progress-bar"></div>
             <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
@@ -71,9 +67,17 @@
                     const decodedData = JSON.parse(decodeURIComponent(encodedData)); // Decode and parse the data
                     console.log(decodedData); // Log the decoded data to verify
 
-                    // Populate dashboard with user data
+                    // Populate user name
                     document.getElementById('user-name').textContent = decodedData.name || 'User';
-                    document.getElementById('recommendations').textContent = decodedData.ai_response || 'No recommendations available.';
+
+                    // Populate Personalized Recommendations with clean AI response
+                    let aiResponse = decodedData.ai_response;
+                    if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
+                        // Parse nested JSON response if present
+                        const parsedResponse = JSON.parse(aiResponse);
+                        aiResponse = parsedResponse.ai_response || 'No recommendations available.';
+                    }
+                    document.getElementById('recommendations').textContent = aiResponse || 'No recommendations available.';
 
                     // Populate form details
                     document.getElementById('form-name').textContent = decodedData.name || 'Not Provided';
@@ -85,9 +89,6 @@
                     document.getElementById('form-security-requirements').textContent = decodedData.security_requirements || 'Not Provided';
                     document.getElementById('form-compliance-needs').textContent = decodedData.compliance_needs || 'Not Provided';
                     document.getElementById('form-nlp-requirements').textContent = decodedData.nlp_requirements || 'Not Provided';
-
-                    // Show AI response from OpenAI instead of "Accepted"
-                    document.getElementById('ai-response').textContent = decodedData.ai_response || 'Not Provided';
 
                 } catch (e) {
                     console.error('Error parsing the encoded data:', e);
