@@ -21,80 +21,37 @@
             height: 25px;
             width: 50%; /* Adjust this value dynamically based on progress */
         }
-        /* Style for text elements */
-        h2 {
-            color: #333;
-        }
-        .data-table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-        .data-table th, .data-table td {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-        }
-        .data-table th {
-            background-color: #f4f4f4;
-        }
-        .data-table td {
-            text-align: left;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h1>
-
+        
         <div class="section">
             <h2>Personalized Recommendations</h2>
             <pre id="recommendations"></pre>
         </div>
 
-        <div class="section">
+        <div class="section" id="structured-form">
             <h2>Form Details</h2>
-            <table class="data-table">
-                <tr>
-                    <th>Name</th>
-                    <td id="form-name"></td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td id="form-email"></td>
-                </tr>
-                <tr>
-                    <th>Business Type</th>
-                    <td id="form-business-type"></td>
-                </tr>
-                <tr>
-                    <th>Industry</th>
-                    <td id="form-industry"></td>
-                </tr>
-                <tr>
-                    <th>Current Infrastructure</th>
-                    <td id="form-current-infrastructure"></td>
-                </tr>
-                <tr>
-                    <th>Application Dependencies</th>
-                    <td id="form-application-dependencies"></td>
-                </tr>
-                <tr>
-                    <th>Security Requirements</th>
-                    <td id="form-security-requirements"></td>
-                </tr>
-                <tr>
-                    <th>Compliance Needs</th>
-                    <td id="form-compliance-needs"></td>
-                </tr>
-                <tr>
-                    <th>Cloud Readiness Requirements</th>
-                    <td id="form-nlp-requirements"></td>
-                </tr>
-                <tr>
-                    <th>AI Response</th>
-                    <td id="ai-response"></td>
-                </tr>
-            </table>
+            <p><strong>Name:</strong> <span id="form-name"></span></p>
+            <p><strong>Email:</strong> <span id="form-email"></span></p>
+            <p><strong>Business Type:</strong> <span id="form-business-type"></span></p>
+            <p><strong>Industry:</strong> <span id="form-industry"></span></p>
+            <p><strong>Current Infrastructure:</strong> <span id="form-current-infrastructure"></span></p>
+            <p><strong>Application Dependencies:</strong> <span id="form-application-dependencies"></span></p>
+            <p><strong>Security Requirements:</strong> <span id="form-security-requirements"></span></p>
+            <p><strong>Compliance Needs:</strong> <span id="form-compliance-needs"></span></p>
+        </div>
+
+        <div class="section" id="nlp-form">
+            <h2>Cloud Readiness Requirements</h2>
+            <p><strong>Cloud Readiness Requirements:</strong> <span id="form-nlp-requirements"></span></p>
+        </div>
+
+        <div class="section">
+            <h2>AI Response</h2>
+            <p id="ai-response">AI Response: <span id="ai-response-text"></span></p>
         </div>
 
         <div class="section">
@@ -129,6 +86,7 @@
         // Populate dashboard with user data
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
+            const userName = params.get('name') || 'User'; // Using name from the URL parameters
             const encodedData = params.get('data');  // Getting the encoded data from URL
 
             if (encodedData) {
@@ -136,21 +94,33 @@
                     const decodedData = JSON.parse(decodeURIComponent(encodedData));  // Decode and parse the data
                     console.log(decodedData);  // Log the data to verify
 
-                    // Populate the dashboard with user data
+                    // Populate dashboard with user data
                     document.getElementById('user-name').textContent = decodedData.name || 'User';
                     document.getElementById('recommendations').textContent = decodedData.ai_response || 'No recommendations available.';
 
-                    // Populate form details
-                    document.getElementById('form-name').textContent = decodedData.name || 'N/A';
-                    document.getElementById('form-email').textContent = decodedData.email || 'N/A';
-                    document.getElementById('form-business-type').textContent = decodedData.business_type || 'N/A';
-                    document.getElementById('form-industry').textContent = decodedData.industry || 'N/A';
-                    document.getElementById('form-current-infrastructure').textContent = decodedData.current_infrastructure || 'N/A';
-                    document.getElementById('form-application-dependencies').textContent = decodedData.application_dependencies || 'N/A';
-                    document.getElementById('form-security-requirements').textContent = decodedData.security_requirements || 'N/A';
-                    document.getElementById('form-compliance-needs').textContent = decodedData.compliance_needs || 'N/A';
-                    document.getElementById('form-nlp-requirements').textContent = decodedData.nlp_requirements || 'N/A';
-                    document.getElementById('ai-response').textContent = decodedData.ai_response || 'N/A';
+                    // Populate form details based on input type
+                    document.getElementById('form-name').textContent = decodedData.name || 'Not Provided';
+                    document.getElementById('form-email').textContent = decodedData.email || 'Not Provided';
+                    document.getElementById('form-business-type').textContent = decodedData.business_type || 'Not Provided';
+                    document.getElementById('form-industry').textContent = decodedData.industry || 'Not Provided';
+                    document.getElementById('form-current-infrastructure').textContent = decodedData.current_infrastructure || 'Not Provided';
+                    document.getElementById('form-application-dependencies').textContent = decodedData.application_dependencies || 'Not Provided';
+                    document.getElementById('form-security-requirements').textContent = decodedData.security_requirements || 'Not Provided';
+                    document.getElementById('form-compliance-needs').textContent = decodedData.compliance_needs || 'Not Provided';
+                    document.getElementById('form-nlp-requirements').textContent = decodedData.nlp_requirements || 'Not Provided';
+                    
+                    // Show AI response from OpenAI instead of "Accepted"
+                    document.getElementById('ai-response-text').textContent = decodedData.ai_response || 'Not Provided';
+
+                    // Hide or show form sections based on input type
+                    if (decodedData.input_type === 'structured') {
+                        document.getElementById('structured-form').style.display = 'block';
+                        document.getElementById('nlp-form').style.display = 'none';
+                    } else if (decodedData.input_type === 'nlp') {
+                        document.getElementById('structured-form').style.display = 'none';
+                        document.getElementById('nlp-form').style.display = 'block';
+                    }
+
                 } catch (e) {
                     console.error('Error parsing the encoded data:', e);
                     alert('Error parsing the dashboard data.');
@@ -159,6 +129,7 @@
         });
 
         function scheduleCall() {
+            // Prompt the user to choose a time for the follow-up call
             const callTime = prompt("Please choose a time for the follow-up call (e.g., 3 PM, tomorrow at 2 PM):");
             if (callTime) {
                 alert(`Your call has been scheduled for: ${callTime}. Our team will get in touch with you.`);
@@ -166,11 +137,14 @@
         }
 
         function downloadReport() {
+            // Initiate a download for the detailed report (e.g., a PDF file)
+            // Replace 'report.pdf' with the actual URL of your report file
             const reportUrl = 'path/to/your/report.pdf';
             window.location.href = reportUrl;
         }
 
         function askQuestion() {
+            // Prompt the user to ask a question and handle the response
             const question = prompt("What question would you like to ask?");
             if (question) {
                 alert("Thank you! We'll get back to you with an answer shortly.");
