@@ -16,17 +16,42 @@
         .section {
             margin-bottom: 20px;
         }
+        .recommendations {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .recommendation-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .recommendation-card h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #4caf50;
+        }
         .progress-bar {
             background-color: #4caf50;
             height: 25px;
-            width: 50%; /* Adjust this value dynamically based on progress */
+            width: 50%; /* Adjust dynamically */
         }
-        .recommendation-item {
-            margin-bottom: 10px;
+        .cta-buttons {
+            margin-top: 20px;
         }
-        ul {
-            list-style-type: disc;
-            margin-left: 20px;
+        .cta-buttons button {
+            margin-right: 10px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+        .cta-buttons button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -35,7 +60,7 @@
         <h1>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h1>
         <div class="section">
             <h2>Personalized Recommendations</h2>
-            <div id="recommendations"></div>
+            <div class="recommendations" id="recommendations"></div>
         </div>
         <div class="section">
             <h2>Progress Tracker</h2>
@@ -50,11 +75,11 @@
                 <li><a href="#">Case Study: Successful Cloud Transition</a></li>
             </ul>
         </div>
-        <div class="section">
-            <h2>Take Action</h2>
+        <div class="section cta-buttons">
             <button onclick="scheduleCall()">Schedule a Call</button>
             <button onclick="downloadReport()">Download Detailed Report</button>
             <button onclick="askQuestion()">Ask a Question</button>
+            <button onclick="returnToForm()">Return to Main Form</button>
         </div>
     </div>
 
@@ -71,7 +96,7 @@
                     const decodedData = JSON.parse(decodeURIComponent(encodedData));
                     console.log(decodedData);
 
-                    // Extract the AI response and clean up the text
+                    // Extract and format the AI response
                     let aiResponse = decodedData.ai_response || 'No recommendations available.';
                     if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
                         try {
@@ -82,15 +107,15 @@
                         }
                     }
 
-                    // Parse AI response into structured recommendations
+                    // Add structured cards for each recommendation
                     const recommendationsContainer = document.getElementById('recommendations');
-                    const recommendationLines = aiResponse.split(/(?:\d\.\s|\n)/); // Split text into points based on numbering or new lines
-                    recommendationLines.forEach((line) => {
+                    const recommendationLines = aiResponse.split(/(?:\d\.\s|\n)/); // Split into points by numbering or line breaks
+                    recommendationLines.forEach((line, index) => {
                         if (line.trim()) {
-                            const recommendationItem = document.createElement('div');
-                            recommendationItem.classList.add('recommendation-item');
-                            recommendationItem.textContent = line.trim();
-                            recommendationsContainer.appendChild(recommendationItem);
+                            const recommendationCard = document.createElement('div');
+                            recommendationCard.classList.add('recommendation-card');
+                            recommendationCard.innerHTML = `<h3>Recommendation ${index + 1}</h3><p>${line.trim()}</p>`;
+                            recommendationsContainer.appendChild(recommendationCard);
                         }
                     });
 
@@ -112,8 +137,13 @@
         }
 
         function downloadReport() {
-            const reportUrl = 'path/to/your/report.pdf'; // Replace with the actual URL of your report
-            window.location.href = reportUrl;
+            // Generate or fetch a dynamic report for download
+            const reportContent = "Detailed Cloud Readiness Report Content Goes Here.";
+            const blob = new Blob([reportContent], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "cloud_readiness_report.txt"; // Change to .pdf if needed
+            link.click();
         }
 
         function askQuestion() {
@@ -121,6 +151,10 @@
             if (question) {
                 alert("Thank you! We'll get back to you with an answer shortly.");
             }
+        }
+
+        function returnToForm() {
+            window.location.href = "index.html"; // Replace with your actual form URL
         }
     </script>
 </body>
