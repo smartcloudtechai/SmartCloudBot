@@ -64,27 +64,23 @@
 
             if (encodedData) {
                 try {
-                    // Decode and parse the data
-                    const decodedData = JSON.parse(decodeURIComponent(encodedData));
-                    console.log(decodedData); // Log the decoded data for debugging
+                    const decodedData = JSON.parse(decodeURIComponent(encodedData)); // Decode and parse the data
+                    console.log(decodedData); // Log the decoded data to verify
 
                     // Populate user name
                     document.getElementById('user-name').textContent = decodedData.name || 'User';
 
-                    // Populate Personalized Recommendations with AI response
+                    // Extract and format AI response for Personalized Recommendations
                     let aiResponse = decodedData.ai_response || 'No recommendations available.';
-                    
-                    // Ensure no nested JSON within the AI response
                     try {
-                        if (typeof aiResponse === 'string' && aiResponse.trim().startsWith('{')) {
-                            const parsedAIResponse = JSON.parse(aiResponse);
-                            aiResponse = parsedAIResponse.ai_response || 'No recommendations available.';
+                        if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
+                            const parsedResponse = JSON.parse(aiResponse); // Parse nested JSON if needed
+                            aiResponse = parsedResponse.ai_response || 'No recommendations available.';
                         }
+                        aiResponse = aiResponse.replace(/\\n/g, '\n'); // Format line breaks for better display
                     } catch (e) {
-                        console.warn("Failed to parse nested AI response. Using raw response.", e);
+                        console.warn('Failed to parse AI response:', e);
                     }
-
-                    // Set the cleaned AI response to the recommendations section
                     document.getElementById('recommendations').textContent = aiResponse;
 
                     // Populate form details
