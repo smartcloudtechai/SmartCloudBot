@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Dashboard</title>
+    <title>Cloud Readiness Dashboard</title>
+    <link rel="stylesheet" href="style.css">
     <script>
         window.onload = function() {
             // Get URL parameters
@@ -23,6 +24,10 @@
                 } else {
                     document.getElementById("ai-response").textContent = "No AI response available.";
                 }
+
+                // Optionally display other form data (if needed)
+                document.getElementById("user-name").textContent = decodedData.name || "N/A";
+                document.getElementById("user-nlp").textContent = decodedData.nlp_requirements || "N/A";
             } else {
                 console.log("No data found in URL");
             }
@@ -30,7 +35,21 @@
     </script>
 </head>
 <body>
-    <h1>AI Dashboard</h1>
-    <div id="ai-response">Loading AI response...</div>
+    <div class="dashboard-container">
+        <h1>Cloud Readiness Dashboard</h1>
+        <div class="info-box">
+            <h2>Personalized Recommendations</h2>
+            <p><strong>Your AI Response:</strong></p>
+            <div id="ai-response" class="response-box">Loading AI response...</div>
+        </div>
+        <div class="info-box">
+            <h2>Form Details</h2>
+            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
+            <p><strong>Cloud Readiness Requirements:</strong> <span id="user-nlp">Loading...</span></p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 CloudReadyAI. All Rights Reserved.</p>
+        </div>
+    </div>
 </body>
 </html>
