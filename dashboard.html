@@ -21,6 +21,13 @@
             height: 25px;
             width: 50%; /* Adjust this value dynamically based on progress */
         }
+        .recommendation-item {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
     </style>
 </head>
 <body>
@@ -28,7 +35,7 @@
         <h1>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h1>
         <div class="section">
             <h2>Personalized Recommendations</h2>
-            <pre id="recommendations"></pre>
+            <div id="recommendations"></div>
         </div>
         <div class="section">
             <h2>Progress Tracker</h2>
@@ -52,25 +59,19 @@
     </div>
 
     <script>
-        // Function to get URL parameters
-        function getURLParameter(name) {
-            return new URLSearchParams(window.location.search).get(name);
-        }
-
-        // Populate dashboard with user data
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
-            const userName = params.get('name') || 'User'; // Using name from the URL parameters
-            const encodedData = params.get('data'); // Using encoded data
+            const userName = params.get('name') || 'User';
+            const encodedData = params.get('data');
 
             document.getElementById('user-name').textContent = userName;
 
             if (encodedData) {
                 try {
-                    const decodedData = JSON.parse(decodeURIComponent(encodedData)); // Decode and parse the data
-                    console.log(decodedData); // Debug log for verification
+                    const decodedData = JSON.parse(decodeURIComponent(encodedData));
+                    console.log(decodedData);
 
-                    // Extract and format the AI response
+                    // Extract the AI response and clean up the text
                     let aiResponse = decodedData.ai_response || 'No recommendations available.';
                     if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
                         try {
@@ -80,8 +81,18 @@
                             console.warn('AI response is already plain text or parsing failed:', e);
                         }
                     }
-                    aiResponse = aiResponse.replace(/\\n/g, '\n'); // Format line breaks
-                    document.getElementById('recommendations').textContent = aiResponse;
+
+                    // Parse AI response into structured recommendations
+                    const recommendationsContainer = document.getElementById('recommendations');
+                    const recommendationLines = aiResponse.split(/(?:\d\.\s|\n)/); // Split text into points based on numbering or new lines
+                    recommendationLines.forEach((line) => {
+                        if (line.trim()) {
+                            const recommendationItem = document.createElement('div');
+                            recommendationItem.classList.add('recommendation-item');
+                            recommendationItem.textContent = line.trim();
+                            recommendationsContainer.appendChild(recommendationItem);
+                        }
+                    });
 
                 } catch (e) {
                     console.error('Error decoding data:', e);
