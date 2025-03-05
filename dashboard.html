@@ -96,7 +96,7 @@
                     const decodedData = JSON.parse(decodeURIComponent(encodedData));
                     console.log(decodedData);
 
-                    // Extract and format the AI response
+                    // Extract the AI response and clean up the text
                     let aiResponse = decodedData.ai_response || 'No recommendations available.';
                     if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
                         try {
