@@ -129,23 +129,33 @@
         // Populate dashboard with user data
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
-            const decodedData = JSON.parse(decodeURIComponent(params.get('data')));
-            
-            // Populate user information
-            document.getElementById('user-name').textContent = decodedData.name || 'User';
-            document.getElementById('recommendations').textContent = decodedData.ai_response || 'No recommendations available.';
+            const encodedData = params.get('data');  // Getting the encoded data from URL
 
-            // Populate form details
-            document.getElementById('form-name').textContent = decodedData.name || 'N/A';
-            document.getElementById('form-email').textContent = decodedData.email || 'N/A';
-            document.getElementById('form-business-type').textContent = decodedData.business_type || 'N/A';
-            document.getElementById('form-industry').textContent = decodedData.industry || 'N/A';
-            document.getElementById('form-current-infrastructure').textContent = decodedData.current_infrastructure || 'N/A';
-            document.getElementById('form-application-dependencies').textContent = decodedData.application_dependencies || 'N/A';
-            document.getElementById('form-security-requirements').textContent = decodedData.security_requirements || 'N/A';
-            document.getElementById('form-compliance-needs').textContent = decodedData.compliance_needs || 'N/A';
-            document.getElementById('form-nlp-requirements').textContent = decodedData.nlp_requirements || 'N/A';
-            document.getElementById('ai-response').textContent = decodedData.ai_response || 'N/A';
+            if (encodedData) {
+                try {
+                    const decodedData = JSON.parse(decodeURIComponent(encodedData));  // Decode and parse the data
+                    console.log(decodedData);  // Log the data to verify
+
+                    // Populate the dashboard with user data
+                    document.getElementById('user-name').textContent = decodedData.name || 'User';
+                    document.getElementById('recommendations').textContent = decodedData.ai_response || 'No recommendations available.';
+
+                    // Populate form details
+                    document.getElementById('form-name').textContent = decodedData.name || 'N/A';
+                    document.getElementById('form-email').textContent = decodedData.email || 'N/A';
+                    document.getElementById('form-business-type').textContent = decodedData.business_type || 'N/A';
+                    document.getElementById('form-industry').textContent = decodedData.industry || 'N/A';
+                    document.getElementById('form-current-infrastructure').textContent = decodedData.current_infrastructure || 'N/A';
+                    document.getElementById('form-application-dependencies').textContent = decodedData.application_dependencies || 'N/A';
+                    document.getElementById('form-security-requirements').textContent = decodedData.security_requirements || 'N/A';
+                    document.getElementById('form-compliance-needs').textContent = decodedData.compliance_needs || 'N/A';
+                    document.getElementById('form-nlp-requirements').textContent = decodedData.nlp_requirements || 'N/A';
+                    document.getElementById('ai-response').textContent = decodedData.ai_response || 'N/A';
+                } catch (e) {
+                    console.error('Error parsing the encoded data:', e);
+                    alert('Error parsing the dashboard data.');
+                }
+            }
         });
 
         function scheduleCall() {
