@@ -31,12 +31,16 @@
         .recommendation-card h3 {
             margin: 0 0 10px;
             font-size: 18px;
+            font-weight: bold;
             color: #4caf50;
+        }
+        .recommendation-card p {
+            margin: 0;
         }
         .progress-bar {
             background-color: #4caf50;
             height: 25px;
-            width: 50%; /* Adjust dynamically */
+            width: 30%; /* Progress bar dynamically set to 30% */
         }
         .cta-buttons {
             margin-top: 20px;
@@ -65,7 +69,7 @@
         <div class="section">
             <h2>Progress Tracker</h2>
             <div class="progress-bar"></div>
-            <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
+            <p id="progress-text">30% Complete - Next Steps: Review tailored recommendations and refine your cloud strategy.</p>
         </div>
         <div class="section">
             <h2>Additional Resources</h2>
@@ -107,14 +111,19 @@
                         }
                     }
 
-                    // Add structured cards for each recommendation
+                    // Add recommendations with bold subheadings under Personalized Recommendations
                     const recommendationsContainer = document.getElementById('recommendations');
                     const recommendationLines = aiResponse.split(/(?:\d\.\s|\n)/); // Split into points by numbering or line breaks
-                    recommendationLines.forEach((line, index) => {
+                    recommendationLines.forEach((line) => {
                         if (line.trim()) {
                             const recommendationCard = document.createElement('div');
                             recommendationCard.classList.add('recommendation-card');
-                            recommendationCard.innerHTML = `<p><b>Recommendation ${index + 1}:</b> ${line.trim()}</p>`;
+                            const parts = line.split(':');
+                            if (parts.length > 1) {
+                                recommendationCard.innerHTML = `<h3>${parts[0].trim()}</h3><p>${parts.slice(1).join(':').trim()}</p>`;
+                            } else {
+                                recommendationCard.innerHTML = `<p>${line.trim()}</p>`;
+                            }
                             recommendationsContainer.appendChild(recommendationCard);
                         }
                     });
@@ -138,11 +147,13 @@
 
         function downloadReport() {
             // Generate and format the report content
-            const recommendations = Array.from(document.querySelectorAll('.recommendation-card p'));
+            const recommendations = Array.from(document.querySelectorAll('.recommendation-card'));
             let reportContent = "CloudReadyAI Recommendations\n\n";
             reportContent += "Based on the provided information, we recommend the following actions:\n\n";
-            recommendations.forEach((rec, index) => {
-                reportContent += `${index + 1}. ${rec.innerText}\n\n`;
+            recommendations.forEach((rec) => {
+                const heading = rec.querySelector('h3')?.innerText || '';
+                const content = rec.querySelector('p')?.innerText || '';
+                reportContent += `${heading}\n${content}\n\n`;
             });
             reportContent += "---\n\n";
             reportContent += "Contact Information:\n";
