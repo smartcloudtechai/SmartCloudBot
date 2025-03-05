@@ -143,23 +143,37 @@
         <p>© 2025 CloudReadyAI. All Rights Reserved.</p>
     </footer>
 
-    <script>
-        // Function to get URL parameters
-        function getURLParameter(name) {
-            return new URLSearchParams(window.location.search).get(name);
+        <script>
+    // Function to get URL parameters
+    function getURLParameter(name) {
+        return new URLSearchParams(window.location.search).get(name);
+    }
+
+    // Populate dashboard with user data
+    document.addEventListener('DOMContentLoaded', function () {
+        const params = new URLSearchParams(window.location.search);
+        const encodedData = params.get('data');
+
+        if (encodedData) {
+            try {
+                // Decode and parse the data from the URL
+                const data = JSON.parse(decodeURIComponent(encodedData));
+                console.log("Decoded Data: ", data);
+
+                // Use the decoded data in your dashboard
+                document.getElementById('user-name').textContent = data.name || 'User';
+                document.getElementById('recommendations').textContent = data.nlp_requirements || 'No recommendations available.';
+                document.getElementById('progress-text').textContent = data.ai_response || 'No AI response available.';
+
+                // You can also update other parts of the dashboard based on the decoded data
+            } catch (error) {
+                console.error('Error parsing JSON data:', error);
+                alert("Error: The data received is not in the correct format.");
+            }
+        } else {
+            console.log('No data found in the URL');
         }
-
-        // Populate dashboard with user data
-        document.addEventListener('DOMContentLoaded', function () {
-            const params = new URLSearchParams(window.location.search);
-            const userName = params.get('name') || 'User'; // Using name from the URL parameters
-            const recommendations = decodeURIComponent(params.get('data')) || 'No recommendations available.';
-            const aiResponse = decodeURIComponent(params.get('ai_response')) || 'No AI response available.';
-
-            document.getElementById('user-name').textContent = userName;
-            document.getElementById('recommendations').textContent = recommendations;
-            document.getElementById('progress-text').textContent = aiResponse; // Display AI Response here if needed
-        });
+    });
 
         function scheduleCall() {
             // Prompt the user to choose a time for the follow-up call
