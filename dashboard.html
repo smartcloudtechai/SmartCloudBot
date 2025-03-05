@@ -74,7 +74,7 @@
                     document.getElementById('user-name').textContent = decodedData.name || 'User';
                     document.getElementById('recommendations').textContent = decodedData.ai_response || 'No recommendations available.';
 
-                    // Populate form details based on input type
+                    // Populate form details
                     document.getElementById('form-name').textContent = decodedData.name || 'Not Provided';
                     document.getElementById('form-email').textContent = decodedData.email || 'Not Provided';
                     document.getElementById('form-business-type').textContent = decodedData.business_type || 'Not Provided';
@@ -87,15 +87,6 @@
 
                     // Show AI response from OpenAI instead of "Accepted"
                     document.getElementById('ai-response').textContent = decodedData.ai_response || 'Not Provided';
-
-                    // Show or hide form sections based on input type
-                    if (decodedData.input_type === 'structured') {
-                        document.getElementById('structured-form').style.display = 'block';
-                        document.getElementById('nlp-form').style.display = 'none';
-                    } else if (decodedData.input_type === 'nlp') {
-                        document.getElementById('structured-form').style.display = 'none';
-                        document.getElementById('nlp-form').style.display = 'block';
-                    }
 
                 } catch (e) {
                     console.error('Error parsing the encoded data:', e);
