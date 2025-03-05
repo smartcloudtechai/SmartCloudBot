@@ -69,7 +69,10 @@
 
                     // Populate dashboard with user data
                     document.getElementById('user-name').textContent = parsedData.name || 'User';
-                    document.getElementById('recommendations').textContent = parsedData.ai_response || 'No AI response available.';
+
+                    // Check if AI response exists and display it
+                    const aiResponse = parsedData.ai_response || 'No AI response available.';
+                    document.getElementById('recommendations').textContent = aiResponse;
 
                     // You can add further details here if required
                     console.log("Parsed Data: ", parsedData);
