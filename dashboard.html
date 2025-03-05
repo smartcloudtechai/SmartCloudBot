@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -92,7 +92,6 @@
     <div class="container">
         <h1>CloudReadyAI</h1>
         <h2>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h2>
-        <p>Email: <span id="user-email"></span></p>
         <div class="section">
             <h3>Personalized Recommendations</h3>
             <div class="recommendations" id="recommendations"></div>
@@ -132,21 +131,18 @@
             try {
                 const parsedData = JSON.parse(decodeURIComponent(rawData)); // Decode and parse JSON
 
-                // Dynamically update name, email, and AI recommendations
+                // Dynamically update name and recommendations
                 const userName = parsedData.name || 'User';
-                const userEmail = parsedData.email || 'Not provided';
                 const aiResponse = parsedData.ai_response || 'No recommendations available.';
 
                 // Update the respective fields
                 document.getElementById('user-name').textContent = userName;
-                document.getElementById('user-email').textContent = userEmail;
                 document.getElementById('recommendations').textContent = aiResponse;
             } catch (error) {
                 console.error('Error parsing data:', error);
 
                 // Fallback in case of parsing issues
                 document.getElementById('user-name').textContent = 'User';
-                document.getElementById('user-email').textContent = 'Not provided';
                 document.getElementById('recommendations').textContent = 'Unable to load recommendations.';
             }
         });
@@ -160,10 +156,9 @@
 
         function downloadReport() {
             const userName = document.getElementById('user-name').textContent;
-            const userEmail = document.getElementById('user-email').textContent;
             const recommendations = document.getElementById('recommendations').textContent;
 
-            const reportContent = `CloudReadyAI Recommendations\n\nUser: ${userName}\nEmail: ${userEmail}\n\nRecommendations:\n${recommendations}\n\n---\n\nContact Information:\nEmail: info@your-domain.com`;
+            const reportContent = `CloudReadyAI Recommendations\n\nUser: ${userName}\n\nRecommendations:\n${recommendations}\n\n---\n\nContact Information:\nEmail: info@your-domain.com`;
 
             const blob = new Blob([reportContent], { type: 'text/plain' });
             const link = document.createElement('a');
