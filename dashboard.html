@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Readiness Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:,">
     <style>
         .container {
             width: 80%;
@@ -32,18 +31,6 @@
             <pre id="recommendations"></pre>
         </div>
         <div class="section">
-            <h2>Form Details</h2>
-            <p>Name: <span id="form-name"></span></p>
-            <p>Email: <span id="form-email"></span></p>
-            <p>Business Type: <span id="form-business-type"></span></p>
-            <p>Industry: <span id="form-industry"></span></p>
-            <p>Current Infrastructure: <span id="form-current-infrastructure"></span></p>
-            <p>Application Dependencies: <span id="form-application-dependencies"></span></p>
-            <p>Security Requirements: <span id="form-security-requirements"></span></p>
-            <p>Compliance Needs: <span id="form-compliance-needs"></span></p>
-            <p>Cloud Readiness Requirements: <span id="form-nlp-requirements"></span></p>
-        </div>
-        <div class="section">
             <h2>Progress Tracker</h2>
             <div class="progress-bar"></div>
             <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
@@ -51,58 +38,79 @@
         <div class="section">
             <h2>Additional Resources</h2>
             <ul>
-                <li><a href="#">Explore Azure Security</a></li>
+                <li><a href="https://azure.microsoft.com/en-us/overview/security/">Explore Azure Security</a></li>
                 <li><a href="#">Read Whitepaper on Cloud Migration</a></li>
+                <li><a href="#">Case Study: Successful Cloud Transition</a></li>
             </ul>
+        </div>
+        <div class="section">
+            <h2>Take Action</h2>
+            <button onclick="scheduleCall()">Schedule a Call</button>
+            <button onclick="downloadReport()">Download Detailed Report</button>
+            <button onclick="askQuestion()">Ask a Question</button>
         </div>
     </div>
 
     <script>
+        // Function to get URL parameters
+        function getURLParameter(name) {
+            return new URLSearchParams(window.location.search).get(name);
+        }
+
+        // Populate dashboard with user data
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
-            const encodedData = params.get('data'); // Getting the encoded data from URL
+            const userName = params.get('name') || 'User'; // Using name from the URL parameters
+            const encodedData = params.get('data'); // Using encoded data
+
+            document.getElementById('user-name').textContent = userName;
 
             if (encodedData) {
                 try {
                     const decodedData = JSON.parse(decodeURIComponent(encodedData)); // Decode and parse the data
-                    console.log(decodedData); // Log the decoded data to verify
+                    console.log(decodedData); // Debug log for verification
 
-                    // Populate user name
-                    document.getElementById('user-name').textContent = decodedData.name || 'User';
-
-                    // Extract and format AI response for Personalized Recommendations
+                    // Extract and format the AI response
                     let aiResponse = decodedData.ai_response || 'No recommendations available.';
-                    if (typeof aiResponse === 'string') {
-                        // Attempt to parse stringified JSON if needed
+                    if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
                         try {
                             const parsedAIResponse = JSON.parse(aiResponse);
                             aiResponse = parsedAIResponse.ai_response || 'No recommendations available.';
                         } catch (e) {
-                            console.warn('AI response is already in plain text or cannot be parsed:', e);
+                            console.warn('AI response is already plain text or parsing failed:', e);
                         }
                     }
-                    aiResponse = aiResponse.replace(/\\n/g, '\n'); // Format line breaks for better display
+                    aiResponse = aiResponse.replace(/\\n/g, '\n'); // Format line breaks
                     document.getElementById('recommendations').textContent = aiResponse;
 
-                    // Populate form details
-                    document.getElementById('form-name').textContent = decodedData.name || 'Not Provided';
-                    document.getElementById('form-email').textContent = decodedData.email || 'Not Provided';
-                    document.getElementById('form-business-type').textContent = decodedData.business_type || 'Not Provided';
-                    document.getElementById('form-industry').textContent = decodedData.industry || 'Not Provided';
-                    document.getElementById('form-current-infrastructure').textContent = decodedData.current_infrastructure || 'Not Provided';
-                    document.getElementById('form-application-dependencies').textContent = decodedData.application_dependencies || 'Not Provided';
-                    document.getElementById('form-security-requirements').textContent = decodedData.security_requirements || 'Not Provided';
-                    document.getElementById('form-compliance-needs').textContent = decodedData.compliance_needs || 'Not Provided';
-                    document.getElementById('form-nlp-requirements').textContent = decodedData.nlp_requirements || 'Not Provided';
-
                 } catch (e) {
-                    console.error('Error parsing the encoded data:', e);
-                    alert('Error parsing the dashboard data.');
+                    console.error('Error decoding data:', e);
+                    document.getElementById('recommendations').textContent = 'Unable to load recommendations.';
                 }
             } else {
                 console.error('No data found in URL.');
+                document.getElementById('recommendations').textContent = 'No recommendations available.';
             }
         });
+
+        function scheduleCall() {
+            const callTime = prompt("Please choose a time for the follow-up call (e.g., 3 PM, tomorrow at 2 PM):");
+            if (callTime) {
+                alert(`Your call has been scheduled for: ${callTime}. Our team will get in touch with you.`);
+            }
+        }
+
+        function downloadReport() {
+            const reportUrl = 'path/to/your/report.pdf'; // Replace with the actual URL of your report
+            window.location.href = reportUrl;
+        }
+
+        function askQuestion() {
+            const question = prompt("What question would you like to ask?");
+            if (question) {
+                alert("Thank you! We'll get back to you with an answer shortly.");
+            }
+        }
     </script>
 </body>
 </html>
