@@ -5,93 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CloudReady AI</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .recommendations {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .recommendation-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .recommendation-card h3 {
-            margin: 0 0 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: black;
-        }
-        .recommendation-card p {
-            margin: 0;
-            color: black;
-        }
-        .progress-bar {
-            background-color: #4caf50;
-            height: 25px;
-            width: 30%; /* Progress bar set to 30% */
-            border-radius: 5px;
-            transition: width 0.5s ease;
-        }
-        .cta-buttons {
-            margin-top: 20px;
-        }
-        .cta-buttons button {
-            margin-right: 10px;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4caf50;
-            color: #fff;
-            cursor: pointer;
-        }
-        .cta-buttons button:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
-        <h1>CloudReady AI</h1>
+        <h1>CloudReadyAI</h1>
         <h2>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h2>
         <div class="section">
-            <h2>Personalized Recommendations</h2>
+            <h3>Personalized Recommendations</h3>
             <div class="recommendations" id="recommendations"></div>
         </div>
         <div class="section">
-            <h2>Progress Tracker</h2>
-            <div class="progress-bar"></div>
+            <h3>Progress Tracker</h3>
+            <div class="progress-bar" style="background-color: #4caf50; height: 25px; width: 30%; border-radius: 5px;"></div>
             <p id="progress-text">30% Complete - Next Steps: Review tailored recommendations and refine your cloud strategy.</p>
         </div>
         <div class="section">
-            <h2>Additional Resources</h2>
+            <h3>Additional Resources</h3>
             <ul>
                 <li><a href="https://azure.microsoft.com/en-us/overview/security/">Explore Azure Security</a></li>
                 <li><a href="#">Read Whitepaper on Cloud Migration</a></li>
                 <li><a href="#">Case Study: Successful Cloud Transition</a></li>
             </ul>
         </div>
-        <div class="section cta-buttons">
+        <div class="section">
             <button onclick="scheduleCall()">Schedule a Call</button>
             <button onclick="downloadReport()">Download Detailed Report</button>
             <button onclick="askQuestion()">Ask a Question</button>
             <button onclick="returnToForm()">Return to Main Form</button>
         </div>
-        <div class="footer">
-            &copy; 2025 CloudReady AI. All rights reserved.
-        </div>
+        <footer>
+            <p>&copy; 2025 CloudReady AI. All rights reserved.</p>
+        </footer>
     </div>
 
     <script>
@@ -100,7 +44,7 @@
             const userName = params.get('name') || 'User';
             const encodedData = params.get('data');
 
-            // Update user name in subheading
+            // Update the user's name in the subheading
             document.getElementById('user-name').textContent = userName;
 
             if (encodedData) {
@@ -108,7 +52,7 @@
                     const decodedData = JSON.parse(decodeURIComponent(encodedData));
                     console.log(decodedData);
 
-                    // Extract the AI response and clean up the text
+                    // Extract and display recommendations
                     let aiResponse = decodedData.ai_response || 'No recommendations available.';
                     if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
                         try {
@@ -119,7 +63,7 @@
                         }
                     }
 
-                    // Add recommendations with bold subheadings under Personalized Recommendations
+                    // Add recommendations under Personalized Recommendations
                     const recommendationsContainer = document.getElementById('recommendations');
                     const recommendationLines = aiResponse.split(/(?:\d\.\s|\n)/); // Split into points by numbering or line breaks
                     recommendationLines.forEach((line) => {
@@ -128,7 +72,7 @@
                             recommendationCard.classList.add('recommendation-card');
                             const parts = line.split(':');
                             if (parts.length > 1) {
-                                recommendationCard.innerHTML = `<h3>${parts[0].trim()}</h3><p>${parts.slice(1).join(':').trim()}</p>`;
+                                recommendationCard.innerHTML = `<h4>${parts[0].trim()}</h4><p>${parts.slice(1).join(':').trim()}</p>`;
                             } else {
                                 recommendationCard.innerHTML = `<p>${line.trim()}</p>`;
                             }
@@ -154,12 +98,11 @@
         }
 
         function downloadReport() {
-            // Generate and format the report content
             const recommendations = Array.from(document.querySelectorAll('.recommendation-card'));
             let reportContent = "CloudReadyAI Recommendations\n\n";
             reportContent += "Based on the provided information, we recommend the following actions:\n\n";
             recommendations.forEach((rec) => {
-                const heading = rec.querySelector('h3')?.innerText || '';
+                const heading = rec.querySelector('h4')?.innerText || '';
                 const content = rec.querySelector('p')?.innerText || '';
                 reportContent += `${heading}\n${content}\n\n`;
             });
@@ -167,7 +110,6 @@
             reportContent += "Contact Information:\n";
             reportContent += "Email: info@your-domain.com\n";
 
-            // Create and download the file
             const blob = new Blob([reportContent], { type: "text/plain" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
@@ -183,7 +125,7 @@
         }
 
         function returnToForm() {
-            window.location.href = "index.html"; // Replace with your actual form URL
+            window.location.href = "index.html";
         }
     </script>
 </body>
