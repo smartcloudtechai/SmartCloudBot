@@ -38,6 +38,12 @@
         button:hover {
             background-color: #45a049;
         }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
     </style>
 </head>
 <body>
@@ -54,7 +60,7 @@
             <div class="progress-bar-container">
                 <div id="progress-bar" class="progress-bar"></div>
             </div>
-            <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
+            <p id="progress-text">80% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
         </div>
 
         <div class="section">
@@ -71,32 +77,27 @@
             <button onclick="scheduleCall()">Schedule a Call</button>
             <button onclick="downloadReport()">Download Detailed Report</button>
             <button onclick="askQuestion()">Ask a Question</button>
+            <button onclick="startNewAssessment()">Start New Assessment</button>
         </div>
     </div>
 
-    <script>
-        // Function to get URL parameters
-        function getURLParameter(name) {
-            return new URLSearchParams(window.location.search).get(name);
-        }
+    <footer>
+        &copy; 2025 CloudReadyAI. All Rights Reserved.
+    </footer>
 
-        // Populate dashboard with user data
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Retrieve user data from URL parameters
             const params = new URLSearchParams(window.location.search);
-            const userName = params.get('name') || 'User'; // Default to 'User' if name is not provided
-
-            // Set the user's name
+            const userName = params.get('name') || 'User';
             document.getElementById('user-name').textContent = userName;
 
             // Retrieve AI response from localStorage
             const aiResponse = localStorage.getItem('ai_response') || 'No AI response available.';
-
-            // Set the AI response in the dashboard
             document.getElementById('recommendations').textContent = aiResponse;
 
-            // Set the progress bar based on a calculated value or hardcoded percentage
-            let progress = 80;  // Example, you can change this dynamically based on progress data
+            // Set the progress bar
+            let progress = 80;  // Example, you can dynamically calculate this
             document.getElementById('progress-bar').style.width = progress + '%';
 
             // Set the progress text
@@ -105,7 +106,6 @@
         });
 
         function scheduleCall() {
-            // Prompt the user to choose a time for the follow-up call
             const callTime = prompt("Please choose a time for the follow-up call (e.g., 3 PM, tomorrow at 2 PM):");
             if (callTime) {
                 alert(`Your call has been scheduled for: ${callTime}. Our team will get in touch with you.`);
@@ -113,18 +113,20 @@
         }
 
         function downloadReport() {
-            // Initiate a download for the detailed report (e.g., a PDF file)
-            // Replace 'report.pdf' with the actual URL of your report file
-            const reportUrl = 'path/to/your/report.pdf';  // Update this to the correct file path
+            const reportUrl = 'path/to/your/report.pdf';
             window.location.href = reportUrl;
         }
 
         function askQuestion() {
-            // Prompt the user to ask a question and handle the response
             const question = prompt("What question would you like to ask?");
             if (question) {
                 alert("Thank you! We'll get back to you with an answer shortly.");
             }
+        }
+
+        function startNewAssessment() {
+            // Redirect to the index page to start a new assessment
+            window.location.replace("https://smartcloudtechai.github.io/SmartCloudBot/index.html");
         }
     </script>
 </body>
