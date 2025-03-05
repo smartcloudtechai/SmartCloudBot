@@ -4,7 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CloudReady AI</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+
+        h2 {
+            text-align: center;
+            color: #666666;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin: 10px 0;
+            color: #333333;
+        }
+
+        p {
+            text-align: center;
+            color: #666666;
+        }
+
+        .progress-bar {
+            background-color: #4caf50;
+            height: 25px;
+            width: 30%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        button {
+            padding: 0.5em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -16,7 +90,7 @@
         </div>
         <div class="section">
             <h3>Progress Tracker</h3>
-            <div class="progress-bar" style="background-color: #4caf50; height: 25px; width: 30%; border-radius: 5px;"></div>
+            <div class="progress-bar"></div>
             <p id="progress-text">30% Complete - Next Steps: Review tailored recommendations and refine your cloud strategy.</p>
         </div>
         <div class="section">
@@ -33,9 +107,9 @@
             <button onclick="askQuestion()">Ask a Question</button>
             <button onclick="returnToForm()">Return to Main Form</button>
         </div>
-        <footer>
-            <p>&copy; 2025 CloudReady AI. All rights reserved.</p>
-        </footer>
+        <div class="footer">
+            &copy; 2025 CloudReady AI. All rights reserved.
+        </div>
     </div>
 
     <script>
@@ -112,7 +186,8 @@
 
             const blob = new Blob([reportContent], { type: "text/plain" });
             const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
+            const url = URL.createObjectURL(blob);
+            link.href = url;
             link.download = "CloudReadiness_Recommendations.txt";
             link.click();
         }
