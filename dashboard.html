@@ -6,35 +6,122 @@
     <title>Cloud Readiness Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
         .container {
             width: 80%;
             margin: 0 auto;
             padding: 20px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            border-radius: 10px;
         }
+
+        h1, h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
         .section {
             margin-bottom: 20px;
         }
+
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #4CAF50;
+        }
+
+        .section p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        pre {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
         .progress-bar {
-            background-color: #4caf50;
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
             height: 25px;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar div {
+            height: 100%;
+            background-color: #4caf50;
             width: 50%; /* Adjust this value dynamically based on progress */
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h1>
+
         <div class="section">
             <h2>Personalized Recommendations</h2>
-            <pre id="recommendations"></pre>
+            <pre id="recommendations">Loading...</pre>
         </div>
+
         <div class="section">
             <h2>Progress Tracker</h2>
-            <div class="progress-bar"></div>
+            <div class="progress-bar">
+                <div></div> <!-- Adjust this width based on progress -->
+            </div>
             <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
         </div>
+
         <div class="section">
             <h2>Additional Resources</h2>
             <ul>
@@ -43,6 +130,7 @@
                 <li><a href="#">Case Study: Successful Cloud Transition</a></li>
             </ul>
         </div>
+
         <div class="section">
             <h2>Take Action</h2>
             <button onclick="scheduleCall()">Schedule a Call</button>
@@ -51,29 +139,26 @@
         </div>
     </div>
 
+    <footer>
+        <p>© 2025 CloudReadyAI. All Rights Reserved.</p>
+    </footer>
+
     <script>
         // Function to get URL parameters
         function getURLParameter(name) {
             return new URLSearchParams(window.location.search).get(name);
         }
 
-        // Function to decode and display form data (including AI response)
-        function decodeData(data) {
-            const parsedData = JSON.parse(decodeURIComponent(data));
-            return parsedData;
-        }
-
         // Populate dashboard with user data
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
             const userName = params.get('name') || 'User'; // Using name from the URL parameters
+            const recommendations = decodeURIComponent(params.get('data')) || 'No recommendations available.';
+            const aiResponse = decodeURIComponent(params.get('ai_response')) || 'No AI response available.';
 
-            const encodedData = params.get('data');
-            const formData = decodeData(encodedData);
-
-            // Setting up user name and AI response
-            document.getElementById('user-name').textContent = formData.name || userName;
-            document.getElementById('recommendations').textContent = formData.ai_response || 'No recommendations available.';
+            document.getElementById('user-name').textContent = userName;
+            document.getElementById('recommendations').textContent = recommendations;
+            document.getElementById('progress-text').textContent = aiResponse; // Display AI Response here if needed
         });
 
         function scheduleCall() {
