@@ -30,7 +30,7 @@
         h2 {
             text-align: center;
             color: #666666;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         h3 {
@@ -43,11 +43,18 @@
             color: #666666;
         }
 
+        .progress-container {
+            background-color: #e0e0e0;
+            height: 25px;
+            width: 100%;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
         .progress-bar {
             background-color: #4caf50;
             height: 25px;
-            width: 30%;
-            border-radius: 5px;
+            width: 30%; /* 30% filled out of 100% */
             transition: width 0.5s ease;
         }
 
@@ -85,13 +92,16 @@
     <div class="container">
         <h1>CloudReadyAI</h1>
         <h2>Welcome to your Cloud Readiness Dashboard, <span id="user-name"></span>!</h2>
+        <p>Email: <span id="user-email"></span></p>
         <div class="section">
             <h3>Personalized Recommendations</h3>
             <div class="recommendations" id="recommendations"></div>
         </div>
         <div class="section">
             <h3>Progress Tracker</h3>
-            <div class="progress-bar"></div>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
             <p id="progress-text">30% Complete - Next Steps: Review tailored recommendations and refine your cloud strategy.</p>
         </div>
         <div class="section">
@@ -117,11 +127,13 @@
         // Function to populate data dynamically from URL
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
-            const userName = params.get('name') || 'User'; // Get the user's name from URL parameters
+            const userName = params.get('name') || 'User'; // Retrieve the user's name from the URL
+            const userEmail = params.get('email') || 'Not provided'; // Retrieve the user's email from the URL
             const recommendations = decodeURIComponent(params.get('data')) || 'No recommendations available.';
 
-            // Update the user's name and recommendations dynamically
+            // Dynamically update name, email, and recommendations
             document.getElementById('user-name').textContent = userName;
+            document.getElementById('user-email').textContent = userEmail;
             document.getElementById('recommendations').textContent = recommendations;
         });
 
@@ -136,7 +148,8 @@
         function downloadReport() {
             // Generate a download of the recommendations report
             const recommendations = document.getElementById('recommendations').textContent;
-            const reportContent = `CloudReadyAI Recommendations\n\n${recommendations}\n\n---\n\nContact Information:\nEmail: info@your-domain.com`;
+            const userEmail = document.getElementById('user-email').textContent;
+            const reportContent = `CloudReadyAI Recommendations\n\n${recommendations}\n\n---\n\nContact Information:\nEmail: ${userEmail}`;
 
             const blob = new Blob([reportContent], { type: "text/plain" });
             const link = document.createElement("a");
