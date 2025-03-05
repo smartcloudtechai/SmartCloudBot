@@ -19,7 +19,7 @@
         .progress-bar {
             background-color: #4caf50;
             height: 25px;
-            width: 80%; /* Adjust dynamically based on progress */
+            width: 80%; /* Dynamically set based on completion */
         }
     </style>
 </head>
@@ -29,15 +29,15 @@
         
         <div class="section">
             <h2>Personalized Recommendations</h2>
-            <pre id="recommendations"></pre>
+            <pre id="recommendations">Loading...</pre>
         </div>
-        
+
         <div class="section">
             <h2>Progress Tracker</h2>
             <div class="progress-bar"></div>
-            <p id="progress-text">80% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
+            <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
         </div>
-        
+
         <div class="section">
             <h2>Additional Resources</h2>
             <ul>
@@ -46,7 +46,7 @@
                 <li><a href="#">Case Study: Successful Cloud Transition</a></li>
             </ul>
         </div>
-        
+
         <div class="section">
             <h2>Take Action</h2>
             <button onclick="scheduleCall()">Schedule a Call</button>
@@ -54,7 +54,6 @@
             <button onclick="askQuestion()">Ask a Question</button>
         </div>
 
-        <!-- Start New Assessment CTA -->
         <div class="section">
             <button onclick="startNewAssessment()">Start New Assessment</button>
         </div>
@@ -66,30 +65,17 @@
             return new URLSearchParams(window.location.search).get(name);
         }
 
-        // Populate dashboard with user data
+        // Populate dashboard with user data and AI response
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
-            
-            // Extract form data from URL
-            const userName = params.get('name') || 'User'; 
-            const formData = {
-                name: userName,
-                email: params.get('email'),
-                business_type: params.get('business_type'),
-                industry: params.get('industry'),
-                current_infrastructure: params.get('current_infrastructure'),
-                application_dependencies: params.get('application_dependencies'),
-                security_requirements: params.get('security_requirements'),
-                compliance_needs: params.get('compliance_needs'),
-            };
-            
-            // Display form data in the dashboard
-            document.getElementById('user-name').textContent = userName;
-            const recommendations = decodeURIComponent(params.get('data')) || 'No AI response available.';
-            document.getElementById('recommendations').textContent = recommendations;
+            const userName = params.get('name') || 'User'; // Get user name from URL
 
-            // Optionally, display other form fields here if required
-            console.log("Form Data:", formData);
+            // Retrieve AI response from localStorage
+            const aiResponse = localStorage.getItem('ai_response') || 'No AI response available.';
+            
+            // Display user name and AI response on dashboard
+            document.getElementById('user-name').textContent = userName;
+            document.getElementById('recommendations').textContent = aiResponse;
         });
 
         function scheduleCall() {
@@ -100,7 +86,7 @@
         }
 
         function downloadReport() {
-            const reportUrl = 'path/to/your/report.pdf'; // Update this link
+            const reportUrl = 'path/to/your/report.pdf'; // Replace with actual report URL
             window.location.href = reportUrl;
         }
 
@@ -111,10 +97,9 @@
             }
         }
 
-        // Start new assessment button
         function startNewAssessment() {
-            localStorage.clear(); // Clear localStorage to start fresh
-            window.location.href = 'index.html'; // Redirect to start new assessment
+            // Redirect to index.html to start a new assessment
+            window.location.href = "index.html";
         }
     </script>
 </body>
