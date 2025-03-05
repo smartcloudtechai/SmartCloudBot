@@ -24,6 +24,7 @@
         h1 {
             text-align: center;
             color: #0056b3;
+            margin-bottom: 10px;
         }
 
         h2 {
@@ -113,58 +114,19 @@
     </div>
 
     <script>
+        // Function to populate data dynamically from URL
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
-            const userName = params.get('name') || 'User';
-            const encodedData = params.get('data');
+            const userName = params.get('name') || 'User'; // Get the user's name from URL parameters
+            const recommendations = decodeURIComponent(params.get('data')) || 'No recommendations available.';
 
-            // Update the user's name in the subheading
+            // Update the user's name and recommendations dynamically
             document.getElementById('user-name').textContent = userName;
-
-            if (encodedData) {
-                try {
-                    const decodedData = JSON.parse(decodeURIComponent(encodedData));
-                    console.log(decodedData);
-
-                    // Extract and display recommendations
-                    let aiResponse = decodedData.ai_response || 'No recommendations available.';
-                    if (typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
-                        try {
-                            const parsedAIResponse = JSON.parse(aiResponse);
-                            aiResponse = parsedAIResponse.ai_response || 'No recommendations available.';
-                        } catch (e) {
-                            console.warn('AI response is already plain text or parsing failed:', e);
-                        }
-                    }
-
-                    // Add recommendations under Personalized Recommendations
-                    const recommendationsContainer = document.getElementById('recommendations');
-                    const recommendationLines = aiResponse.split(/(?:\d\.\s|\n)/); // Split into points by numbering or line breaks
-                    recommendationLines.forEach((line) => {
-                        if (line.trim()) {
-                            const recommendationCard = document.createElement('div');
-                            recommendationCard.classList.add('recommendation-card');
-                            const parts = line.split(':');
-                            if (parts.length > 1) {
-                                recommendationCard.innerHTML = `<h4>${parts[0].trim()}</h4><p>${parts.slice(1).join(':').trim()}</p>`;
-                            } else {
-                                recommendationCard.innerHTML = `<p>${line.trim()}</p>`;
-                            }
-                            recommendationsContainer.appendChild(recommendationCard);
-                        }
-                    });
-
-                } catch (e) {
-                    console.error('Error decoding data:', e);
-                    document.getElementById('recommendations').textContent = 'Unable to load recommendations.';
-                }
-            } else {
-                console.error('No data found in URL.');
-                document.getElementById('recommendations').textContent = 'No recommendations available.';
-            }
+            document.getElementById('recommendations').textContent = recommendations;
         });
 
         function scheduleCall() {
+            // Prompt the user to choose a time for the follow-up call
             const callTime = prompt("Please choose a time for the follow-up call (e.g., 3 PM, tomorrow at 2 PM):");
             if (callTime) {
                 alert(`Your call has been scheduled for: ${callTime}. Our team will get in touch with you.`);
@@ -172,17 +134,9 @@
         }
 
         function downloadReport() {
-            const recommendations = Array.from(document.querySelectorAll('.recommendation-card'));
-            let reportContent = "CloudReadyAI Recommendations\n\n";
-            reportContent += "Based on the provided information, we recommend the following actions:\n\n";
-            recommendations.forEach((rec) => {
-                const heading = rec.querySelector('h4')?.innerText || '';
-                const content = rec.querySelector('p')?.innerText || '';
-                reportContent += `${heading}\n${content}\n\n`;
-            });
-            reportContent += "---\n\n";
-            reportContent += "Contact Information:\n";
-            reportContent += "Email: info@your-domain.com\n";
+            // Generate a download of the recommendations report
+            const recommendations = document.getElementById('recommendations').textContent;
+            const reportContent = `CloudReadyAI Recommendations\n\n${recommendations}\n\n---\n\nContact Information:\nEmail: info@your-domain.com`;
 
             const blob = new Blob([reportContent], { type: "text/plain" });
             const link = document.createElement("a");
@@ -193,6 +147,7 @@
         }
 
         function askQuestion() {
+            // Prompt the user to ask a question
             const question = prompt("What question would you like to ask?");
             if (question) {
                 alert("Thank you! We'll get back to you with an answer shortly.");
@@ -200,6 +155,7 @@
         }
 
         function returnToForm() {
+            // Redirect the user to the main form
             window.location.href = "index.html";
         }
     </script>
