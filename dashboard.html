@@ -6,102 +6,39 @@
     <title>Cloud Readiness Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
         .container {
             width: 80%;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
-            border-radius: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
         }
-
-        h1, h2 {
-            font-size: 24px;
-            color: #333;
-        }
-
         .section {
             margin-bottom: 20px;
         }
-
-        .section h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #4CAF50;
-        }
-
-        .section p {
-            font-size: 16px;
-            color: #555;
-        }
-
-        pre {
-            background-color: #f0f0f0;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-
         .progress-bar {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            height: 25px;
-            margin-bottom: 10px;
-        }
-
-        .progress-bar div {
-            height: 100%;
             background-color: #4caf50;
+            height: 25px;
             width: 50%; /* Adjust this value dynamically based on progress */
-            border-radius: 5px;
         }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
+        /* Style for text elements */
+        h2 {
+            color: #333;
         }
-
-        button:hover {
-            background-color: #45a049;
+        .data-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
         }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
+        .data-table th, .data-table td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
         }
-
-        ul li {
-            margin-bottom: 10px;
+        .data-table th {
+            background-color: #f4f4f4;
         }
-
-        a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 14px;
-            color: #777;
+        .data-table td {
+            text-align: left;
         }
     </style>
 </head>
@@ -111,14 +48,58 @@
 
         <div class="section">
             <h2>Personalized Recommendations</h2>
-            <pre id="recommendations">Loading...</pre>
+            <pre id="recommendations"></pre>
+        </div>
+
+        <div class="section">
+            <h2>Form Details</h2>
+            <table class="data-table">
+                <tr>
+                    <th>Name</th>
+                    <td id="form-name"></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td id="form-email"></td>
+                </tr>
+                <tr>
+                    <th>Business Type</th>
+                    <td id="form-business-type"></td>
+                </tr>
+                <tr>
+                    <th>Industry</th>
+                    <td id="form-industry"></td>
+                </tr>
+                <tr>
+                    <th>Current Infrastructure</th>
+                    <td id="form-current-infrastructure"></td>
+                </tr>
+                <tr>
+                    <th>Application Dependencies</th>
+                    <td id="form-application-dependencies"></td>
+                </tr>
+                <tr>
+                    <th>Security Requirements</th>
+                    <td id="form-security-requirements"></td>
+                </tr>
+                <tr>
+                    <th>Compliance Needs</th>
+                    <td id="form-compliance-needs"></td>
+                </tr>
+                <tr>
+                    <th>Cloud Readiness Requirements</th>
+                    <td id="form-nlp-requirements"></td>
+                </tr>
+                <tr>
+                    <th>AI Response</th>
+                    <td id="ai-response"></td>
+                </tr>
+            </table>
         </div>
 
         <div class="section">
             <h2>Progress Tracker</h2>
-            <div class="progress-bar">
-                <div></div> <!-- Adjust this width based on progress -->
-            </div>
+            <div class="progress-bar"></div>
             <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
         </div>
 
@@ -139,44 +120,35 @@
         </div>
     </div>
 
-    <footer>
-        <p>© 2025 CloudReadyAI. All Rights Reserved.</p>
-    </footer>
-
-        <script>
-    // Function to get URL parameters
-    function getURLParameter(name) {
-        return new URLSearchParams(window.location.search).get(name);
-    }
-
-    // Populate dashboard with user data
-    document.addEventListener('DOMContentLoaded', function () {
-        const params = new URLSearchParams(window.location.search);
-        const encodedData = params.get('data');
-
-        if (encodedData) {
-            try {
-                // Decode and parse the data from the URL
-                const data = JSON.parse(decodeURIComponent(encodedData));
-                console.log("Decoded Data: ", data);
-
-                // Use the decoded data in your dashboard
-                document.getElementById('user-name').textContent = data.name || 'User';
-                document.getElementById('recommendations').textContent = data.nlp_requirements || 'No recommendations available.';
-                document.getElementById('progress-text').textContent = data.ai_response || 'No AI response available.';
-
-                // You can also update other parts of the dashboard based on the decoded data
-            } catch (error) {
-                console.error('Error parsing JSON data:', error);
-                alert("Error: The data received is not in the correct format.");
-            }
-        } else {
-            console.log('No data found in the URL');
+    <script>
+        // Function to get URL parameters
+        function getURLParameter(name) {
+            return new URLSearchParams(window.location.search).get(name);
         }
-    });
+
+        // Populate dashboard with user data
+        document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            const decodedData = JSON.parse(decodeURIComponent(params.get('data')));
+            
+            // Populate user information
+            document.getElementById('user-name').textContent = decodedData.name || 'User';
+            document.getElementById('recommendations').textContent = decodedData.ai_response || 'No recommendations available.';
+
+            // Populate form details
+            document.getElementById('form-name').textContent = decodedData.name || 'N/A';
+            document.getElementById('form-email').textContent = decodedData.email || 'N/A';
+            document.getElementById('form-business-type').textContent = decodedData.business_type || 'N/A';
+            document.getElementById('form-industry').textContent = decodedData.industry || 'N/A';
+            document.getElementById('form-current-infrastructure').textContent = decodedData.current_infrastructure || 'N/A';
+            document.getElementById('form-application-dependencies').textContent = decodedData.application_dependencies || 'N/A';
+            document.getElementById('form-security-requirements').textContent = decodedData.security_requirements || 'N/A';
+            document.getElementById('form-compliance-needs').textContent = decodedData.compliance_needs || 'N/A';
+            document.getElementById('form-nlp-requirements').textContent = decodedData.nlp_requirements || 'N/A';
+            document.getElementById('ai-response').textContent = decodedData.ai_response || 'N/A';
+        });
 
         function scheduleCall() {
-            // Prompt the user to choose a time for the follow-up call
             const callTime = prompt("Please choose a time for the follow-up call (e.g., 3 PM, tomorrow at 2 PM):");
             if (callTime) {
                 alert(`Your call has been scheduled for: ${callTime}. Our team will get in touch with you.`);
@@ -184,14 +156,11 @@
         }
 
         function downloadReport() {
-            // Initiate a download for the detailed report (e.g., a PDF file)
-            // Replace 'report.pdf' with the actual URL of your report file
             const reportUrl = 'path/to/your/report.pdf';
             window.location.href = reportUrl;
         }
 
         function askQuestion() {
-            // Prompt the user to ask a question and handle the response
             const question = prompt("What question would you like to ask?");
             if (question) {
                 alert("Thank you! We'll get back to you with an answer shortly.");
