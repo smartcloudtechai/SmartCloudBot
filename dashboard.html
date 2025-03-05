@@ -35,7 +35,7 @@
         <div class="section">
             <h2>Progress Tracker</h2>
             <div class="progress-bar"></div>
-            <p id="progress-text">50% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
+            <p id="progress-text">80% Complete - Next Steps: Explore PaaS options, review security requirements, etc.</p>
         </div>
 
         <div class="section">
@@ -52,30 +52,21 @@
             <button onclick="scheduleCall()">Schedule a Call</button>
             <button onclick="downloadReport()">Download Detailed Report</button>
             <button onclick="askQuestion()">Ask a Question</button>
-        </div>
-
-        <div class="section">
             <button onclick="startNewAssessment()">Start New Assessment</button>
         </div>
     </div>
 
     <script>
-        // Function to get URL parameters
-        function getURLParameter(name) {
-            return new URLSearchParams(window.location.search).get(name);
-        }
+        // Check localStorage for AI response
+        document.addEventListener('DOMContentLoaded', function() {
+            const aiResponse = localStorage.getItem('ai_response');
+            const userName = new URLSearchParams(window.location.search).get('name') || 'User';
 
-        // Populate dashboard with user data and AI response
-        document.addEventListener('DOMContentLoaded', function () {
-            const params = new URLSearchParams(window.location.search);
-            const userName = params.get('name') || 'User'; // Get user name from URL
+            console.log("AI Response from localStorage:", aiResponse); // Debug log to check stored response
+            console.log("User Name from URL:", userName);
 
-            // Retrieve AI response from localStorage
-            const aiResponse = localStorage.getItem('ai_response') || 'No AI response available.';
-            
-            // Display user name and AI response on dashboard
             document.getElementById('user-name').textContent = userName;
-            document.getElementById('recommendations').textContent = aiResponse;
+            document.getElementById('recommendations').textContent = aiResponse ? aiResponse : "No AI response available.";
         });
 
         function scheduleCall() {
@@ -98,7 +89,6 @@
         }
 
         function startNewAssessment() {
-            // Redirect to index.html to start a new assessment
             window.location.href = "index.html";
         }
     </script>
