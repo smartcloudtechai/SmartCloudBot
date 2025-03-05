@@ -63,12 +63,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const params = new URLSearchParams(window.location.search);
-            const encodedData = params.get('data');  // Getting the encoded data from URL
+            const encodedData = params.get('data'); // Getting the encoded data from URL
 
             if (encodedData) {
                 try {
-                    const decodedData = JSON.parse(decodeURIComponent(encodedData));  // Decode and parse the data
-                    console.log(decodedData);  // Log the decoded data to verify
+                    const decodedData = JSON.parse(decodeURIComponent(encodedData)); // Decode and parse the data
+                    console.log(decodedData); // Log the decoded data to verify
 
                     // Populate dashboard with user data
                     document.getElementById('user-name').textContent = decodedData.name || 'User';
@@ -92,6 +92,8 @@
                     console.error('Error parsing the encoded data:', e);
                     alert('Error parsing the dashboard data.');
                 }
+            } else {
+                console.error('No data found in URL.');
             }
         });
     </script>
